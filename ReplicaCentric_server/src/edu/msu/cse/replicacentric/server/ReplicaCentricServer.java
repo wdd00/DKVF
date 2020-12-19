@@ -76,11 +76,11 @@ public class ReplicaCentricServer extends DKVFServer {
     // Use hash map to store the timestamps of tracked edges instead of list.
     // Let the searching become more efficient.
     //List<Metadata.Dependency> timestamp;
-    HashMap<Edge, Integer> timestamp = new HashMap<>();
+    HashMap<Edge, Integer> timestamp;
     // Adjacent Matrix to represent the shared graph.
     HashSet<Integer>[][] AdMatrix;
-    final List<ReplicateMessage> pendingReplicateMessages = new ArrayList<>();
-    List<HashSet<Integer>> sharedGraph = new ArrayList<>();
+    List<ReplicateMessage> pendingReplicateMessages;
+    List<HashSet<Integer>> sharedGraph;
 
     /**
      * Constructor for DKVFServer
@@ -97,10 +97,19 @@ public class ReplicaCentricServer extends DKVFServer {
         // Assume the ID of servers are 1, 2, ..., numOfServers.
         numOfServers = new Integer(protocolProperties.get("num_of_servers").get(0));
         numOfBuckets = new Integer(protocolProperties.get("num_of_buckets").get(0));
+        timestamp = new HashMap<>();
+        AdMatrix = new HashSet[numOfServers][numOfServers];
+        pendingReplicateMessages = new ArrayList<>();
+        sharedGraph = new ArrayList<>();
+
         for(int i = 1; i <= numOfServers; i++) {
-            List<String> buckets = protocolProperties.get("server" + i);
-            sharedGraph.add(new HashSet<>(buckets.stream().map(Integer::parseInt).collect(Collectors.toList())));
-            protocolLOGGER.finer("server" + i + buckets.toString());
+            HashSet<Integer> keys = new HashSet<>();
+            if (protocolProperties.get("server" + i) != null) {
+                for (String key: protocolProperties.get("server" + i)) {
+                    keys.add(new Integer(key));
+                }
+            }
+            sharedGraph.add(keys);
         }
 
 
