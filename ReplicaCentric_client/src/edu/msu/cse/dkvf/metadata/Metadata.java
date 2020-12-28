@@ -20,13 +20,11 @@ public final class Metadata {
 
     /**
      * <code>int32 vertex1 = 1;</code>
-     * @return The vertex1.
      */
     int getVertex1();
 
     /**
      * <code>int32 vertex2 = 2;</code>
-     * @return The vertex2.
      */
     int getVertex2();
   }
@@ -37,7 +35,7 @@ public final class Metadata {
    *
    * Protobuf type {@code Metadata.Edge}
    */
-  public static final class Edge extends
+  public  static final class Edge extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.Edge)
       EdgeOrBuilder {
@@ -47,13 +45,8 @@ public final class Metadata {
       super(builder);
     }
     private Edge() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new Edge();
+      vertex1_ = 0;
+      vertex2_ = 0;
     }
 
     @java.lang.Override
@@ -66,9 +59,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -79,6 +70,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 8: {
 
               vertex1_ = input.readInt32();
@@ -87,13 +85,6 @@ public final class Metadata {
             case 16: {
 
               vertex2_ = input.readInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
               break;
             }
           }
@@ -113,7 +104,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Edge_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Edge_fieldAccessorTable
@@ -125,9 +115,7 @@ public final class Metadata {
     private int vertex1_;
     /**
      * <code>int32 vertex1 = 1;</code>
-     * @return The vertex1.
      */
-    @java.lang.Override
     public int getVertex1() {
       return vertex1_;
     }
@@ -136,15 +124,12 @@ public final class Metadata {
     private int vertex2_;
     /**
      * <code>int32 vertex2 = 2;</code>
-     * @return The vertex2.
      */
-    @java.lang.Override
     public int getVertex2() {
       return vertex2_;
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -154,7 +139,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (vertex1_ != 0) {
@@ -166,7 +150,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -195,12 +178,13 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.Edge other = (edu.msu.cse.dkvf.metadata.Metadata.Edge) obj;
 
-      if (getVertex1()
-          != other.getVertex1()) return false;
-      if (getVertex2()
-          != other.getVertex2()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      boolean result = true;
+      result = result && (getVertex1()
+          == other.getVertex1());
+      result = result && (getVertex2()
+          == other.getVertex2());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -289,7 +273,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -297,7 +280,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.Edge prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -325,7 +307,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Edge_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Edge_fieldAccessorTable
@@ -348,7 +329,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         vertex1_ = 0;
@@ -358,18 +338,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Edge_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Edge getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.Edge.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Edge build() {
         edu.msu.cse.dkvf.metadata.Metadata.Edge result = buildPartial();
         if (!result.isInitialized()) {
@@ -378,7 +355,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Edge buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.Edge result = new edu.msu.cse.dkvf.metadata.Metadata.Edge(this);
         result.vertex1_ = vertex1_;
@@ -387,39 +363,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.Edge) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.Edge)other);
@@ -442,12 +411,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -469,16 +436,12 @@ public final class Metadata {
       private int vertex1_ ;
       /**
        * <code>int32 vertex1 = 1;</code>
-       * @return The vertex1.
        */
-      @java.lang.Override
       public int getVertex1() {
         return vertex1_;
       }
       /**
        * <code>int32 vertex1 = 1;</code>
-       * @param value The vertex1 to set.
-       * @return This builder for chaining.
        */
       public Builder setVertex1(int value) {
         
@@ -488,7 +451,6 @@ public final class Metadata {
       }
       /**
        * <code>int32 vertex1 = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearVertex1() {
         
@@ -500,16 +462,12 @@ public final class Metadata {
       private int vertex2_ ;
       /**
        * <code>int32 vertex2 = 2;</code>
-       * @return The vertex2.
        */
-      @java.lang.Override
       public int getVertex2() {
         return vertex2_;
       }
       /**
        * <code>int32 vertex2 = 2;</code>
-       * @param value The vertex2 to set.
-       * @return This builder for chaining.
        */
       public Builder setVertex2(int value) {
         
@@ -519,7 +477,6 @@ public final class Metadata {
       }
       /**
        * <code>int32 vertex2 = 2;</code>
-       * @return This builder for chaining.
        */
       public Builder clearVertex2() {
         
@@ -527,13 +484,11 @@ public final class Metadata {
         onChanged();
         return this;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -555,12 +510,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<Edge>
         PARSER = new com.google.protobuf.AbstractParser<Edge>() {
-      @java.lang.Override
       public Edge parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Edge(input, extensionRegistry);
+          return new Edge(input, extensionRegistry);
       }
     };
 
@@ -573,7 +527,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Edge getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -586,12 +539,10 @@ public final class Metadata {
 
     /**
      * <code>.Metadata.Edge edge = 1;</code>
-     * @return Whether the edge field is set.
      */
     boolean hasEdge();
     /**
      * <code>.Metadata.Edge edge = 1;</code>
-     * @return The edge.
      */
     edu.msu.cse.dkvf.metadata.Metadata.Edge getEdge();
     /**
@@ -605,14 +556,13 @@ public final class Metadata {
      * </pre>
      *
      * <code>int64 version = 2;</code>
-     * @return The version.
      */
     long getVersion();
   }
   /**
    * Protobuf type {@code Metadata.Dependency}
    */
-  public static final class Dependency extends
+  public  static final class Dependency extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.Dependency)
       DependencyOrBuilder {
@@ -622,13 +572,7 @@ public final class Metadata {
       super(builder);
     }
     private Dependency() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new Dependency();
+      version_ = 0L;
     }
 
     @java.lang.Override
@@ -641,9 +585,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -654,6 +596,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               edu.msu.cse.dkvf.metadata.Metadata.Edge.Builder subBuilder = null;
               if (edge_ != null) {
@@ -670,13 +619,6 @@ public final class Metadata {
             case 16: {
 
               version_ = input.readInt64();
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
               break;
             }
           }
@@ -696,7 +638,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Dependency_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Dependency_fieldAccessorTable
@@ -708,24 +649,19 @@ public final class Metadata {
     private edu.msu.cse.dkvf.metadata.Metadata.Edge edge_;
     /**
      * <code>.Metadata.Edge edge = 1;</code>
-     * @return Whether the edge field is set.
      */
-    @java.lang.Override
     public boolean hasEdge() {
       return edge_ != null;
     }
     /**
      * <code>.Metadata.Edge edge = 1;</code>
-     * @return The edge.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Edge getEdge() {
       return edge_ == null ? edu.msu.cse.dkvf.metadata.Metadata.Edge.getDefaultInstance() : edge_;
     }
     /**
      * <code>.Metadata.Edge edge = 1;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.EdgeOrBuilder getEdgeOrBuilder() {
       return getEdge();
     }
@@ -738,15 +674,12 @@ public final class Metadata {
      * </pre>
      *
      * <code>int64 version = 2;</code>
-     * @return The version.
      */
-    @java.lang.Override
     public long getVersion() {
       return version_;
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -756,7 +689,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (edge_ != null) {
@@ -768,7 +700,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -797,15 +728,16 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.Dependency other = (edu.msu.cse.dkvf.metadata.Metadata.Dependency) obj;
 
-      if (hasEdge() != other.hasEdge()) return false;
+      boolean result = true;
+      result = result && (hasEdge() == other.hasEdge());
       if (hasEdge()) {
-        if (!getEdge()
-            .equals(other.getEdge())) return false;
+        result = result && getEdge()
+            .equals(other.getEdge());
       }
-      if (getVersion()
-          != other.getVersion()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && (getVersion()
+          == other.getVersion());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -897,7 +829,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -905,7 +836,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.Dependency prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -929,7 +859,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Dependency_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Dependency_fieldAccessorTable
@@ -952,7 +881,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (edgeBuilder_ == null) {
@@ -966,18 +894,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Dependency_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Dependency getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.Dependency.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Dependency build() {
         edu.msu.cse.dkvf.metadata.Metadata.Dependency result = buildPartial();
         if (!result.isInitialized()) {
@@ -986,7 +911,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Dependency buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.Dependency result = new edu.msu.cse.dkvf.metadata.Metadata.Dependency(this);
         if (edgeBuilder_ == null) {
@@ -999,39 +923,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.Dependency) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.Dependency)other);
@@ -1054,12 +971,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1078,19 +993,17 @@ public final class Metadata {
         return this;
       }
 
-      private edu.msu.cse.dkvf.metadata.Metadata.Edge edge_;
+      private edu.msu.cse.dkvf.metadata.Metadata.Edge edge_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.msu.cse.dkvf.metadata.Metadata.Edge, edu.msu.cse.dkvf.metadata.Metadata.Edge.Builder, edu.msu.cse.dkvf.metadata.Metadata.EdgeOrBuilder> edgeBuilder_;
       /**
        * <code>.Metadata.Edge edge = 1;</code>
-       * @return Whether the edge field is set.
        */
       public boolean hasEdge() {
         return edgeBuilder_ != null || edge_ != null;
       }
       /**
        * <code>.Metadata.Edge edge = 1;</code>
-       * @return The edge.
        */
       public edu.msu.cse.dkvf.metadata.Metadata.Edge getEdge() {
         if (edgeBuilder_ == null) {
@@ -1204,9 +1117,7 @@ public final class Metadata {
        * </pre>
        *
        * <code>int64 version = 2;</code>
-       * @return The version.
        */
-      @java.lang.Override
       public long getVersion() {
         return version_;
       }
@@ -1216,8 +1127,6 @@ public final class Metadata {
        * </pre>
        *
        * <code>int64 version = 2;</code>
-       * @param value The version to set.
-       * @return This builder for chaining.
        */
       public Builder setVersion(long value) {
         
@@ -1231,7 +1140,6 @@ public final class Metadata {
        * </pre>
        *
        * <code>int64 version = 2;</code>
-       * @return This builder for chaining.
        */
       public Builder clearVersion() {
         
@@ -1239,13 +1147,11 @@ public final class Metadata {
         onChanged();
         return this;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -1267,12 +1173,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<Dependency>
         PARSER = new com.google.protobuf.AbstractParser<Dependency>() {
-      @java.lang.Override
       public Dependency parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Dependency(input, extensionRegistry);
+          return new Dependency(input, extensionRegistry);
       }
     };
 
@@ -1285,7 +1190,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Dependency getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1298,7 +1202,6 @@ public final class Metadata {
 
     /**
      * <code>bytes value = 1;</code>
-     * @return The value.
      */
     com.google.protobuf.ByteString getValue();
   }
@@ -1310,7 +1213,7 @@ public final class Metadata {
    *
    * Protobuf type {@code Metadata.Record}
    */
-  public static final class Record extends
+  public  static final class Record extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.Record)
       RecordOrBuilder {
@@ -1324,13 +1227,6 @@ public final class Metadata {
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new Record();
-    }
-
-    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1340,9 +1236,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1353,16 +1247,16 @@ public final class Metadata {
             case 0:
               done = true;
               break;
-            case 10: {
-
-              value_ = input.readBytes();
-              break;
-            }
             default: {
-              if (!parseUnknownField(
+              if (!parseUnknownFieldProto3(
                   input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
+              break;
+            }
+            case 10: {
+
+              value_ = input.readBytes();
               break;
             }
           }
@@ -1382,7 +1276,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Record_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Record_fieldAccessorTable
@@ -1394,15 +1287,12 @@ public final class Metadata {
     private com.google.protobuf.ByteString value_;
     /**
      * <code>bytes value = 1;</code>
-     * @return The value.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString getValue() {
       return value_;
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1412,7 +1302,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!value_.isEmpty()) {
@@ -1421,7 +1310,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1446,10 +1334,11 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.Record other = (edu.msu.cse.dkvf.metadata.Metadata.Record) obj;
 
-      if (!getValue()
-          .equals(other.getValue())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      boolean result = true;
+      result = result && getValue()
+          .equals(other.getValue());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -1536,7 +1425,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -1544,7 +1432,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.Record prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -1573,7 +1460,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Record_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Record_fieldAccessorTable
@@ -1596,7 +1482,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         value_ = com.google.protobuf.ByteString.EMPTY;
@@ -1604,18 +1489,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_Record_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Record getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.Record.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Record build() {
         edu.msu.cse.dkvf.metadata.Metadata.Record result = buildPartial();
         if (!result.isInitialized()) {
@@ -1624,7 +1506,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.Record buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.Record result = new edu.msu.cse.dkvf.metadata.Metadata.Record(this);
         result.value_ = value_;
@@ -1632,39 +1513,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.Record) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.Record)other);
@@ -1684,12 +1558,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -1711,16 +1583,12 @@ public final class Metadata {
       private com.google.protobuf.ByteString value_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>bytes value = 1;</code>
-       * @return The value.
        */
-      @java.lang.Override
       public com.google.protobuf.ByteString getValue() {
         return value_;
       }
       /**
        * <code>bytes value = 1;</code>
-       * @param value The value to set.
-       * @return This builder for chaining.
        */
       public Builder setValue(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1733,7 +1601,6 @@ public final class Metadata {
       }
       /**
        * <code>bytes value = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearValue() {
         
@@ -1741,13 +1608,11 @@ public final class Metadata {
         onChanged();
         return this;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -1769,12 +1634,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<Record>
         PARSER = new com.google.protobuf.AbstractParser<Record>() {
-      @java.lang.Override
       public Record parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Record(input, extensionRegistry);
+          return new Record(input, extensionRegistry);
       }
     };
 
@@ -1787,7 +1651,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Record getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -1800,12 +1663,10 @@ public final class Metadata {
 
     /**
      * <code>string key = 1;</code>
-     * @return The key.
      */
     java.lang.String getKey();
     /**
      * <code>string key = 1;</code>
-     * @return The bytes for key.
      */
     com.google.protobuf.ByteString
         getKeyBytes();
@@ -1817,7 +1678,7 @@ public final class Metadata {
    *
    * Protobuf type {@code Metadata.GetMessage}
    */
-  public static final class GetMessage extends
+  public  static final class GetMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.GetMessage)
       GetMessageOrBuilder {
@@ -1831,13 +1692,6 @@ public final class Metadata {
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new GetMessage();
-    }
-
-    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -1847,9 +1701,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1860,17 +1712,17 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
               key_ = s;
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
               break;
             }
           }
@@ -1890,7 +1742,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetMessage_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetMessage_fieldAccessorTable
@@ -1902,9 +1753,7 @@ public final class Metadata {
     private volatile java.lang.Object key_;
     /**
      * <code>string key = 1;</code>
-     * @return The key.
      */
-    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -1919,9 +1768,7 @@ public final class Metadata {
     }
     /**
      * <code>string key = 1;</code>
-     * @return The bytes for key.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -1937,7 +1784,6 @@ public final class Metadata {
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -1947,7 +1793,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getKeyBytes().isEmpty()) {
@@ -1956,7 +1801,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -1980,10 +1824,11 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.GetMessage other = (edu.msu.cse.dkvf.metadata.Metadata.GetMessage) obj;
 
-      if (!getKey()
-          .equals(other.getKey())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      boolean result = true;
+      result = result && getKey()
+          .equals(other.getKey());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -2070,7 +1915,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2078,7 +1922,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.GetMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2106,7 +1949,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetMessage_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetMessage_fieldAccessorTable
@@ -2129,7 +1971,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         key_ = "";
@@ -2137,18 +1978,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetMessage_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetMessage getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.GetMessage.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetMessage build() {
         edu.msu.cse.dkvf.metadata.Metadata.GetMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -2157,7 +1995,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetMessage buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.GetMessage result = new edu.msu.cse.dkvf.metadata.Metadata.GetMessage(this);
         result.key_ = key_;
@@ -2165,39 +2002,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.GetMessage) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.GetMessage)other);
@@ -2218,12 +2048,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2245,7 +2073,6 @@ public final class Metadata {
       private java.lang.Object key_ = "";
       /**
        * <code>string key = 1;</code>
-       * @return The key.
        */
       public java.lang.String getKey() {
         java.lang.Object ref = key_;
@@ -2261,7 +2088,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @return The bytes for key.
        */
       public com.google.protobuf.ByteString
           getKeyBytes() {
@@ -2278,8 +2104,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @param value The key to set.
-       * @return This builder for chaining.
        */
       public Builder setKey(
           java.lang.String value) {
@@ -2293,7 +2117,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearKey() {
         
@@ -2303,8 +2126,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @param value The bytes for key to set.
-       * @return This builder for chaining.
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {
@@ -2317,13 +2138,11 @@ public final class Metadata {
         onChanged();
         return this;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -2345,12 +2164,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<GetMessage>
         PARSER = new com.google.protobuf.AbstractParser<GetMessage>() {
-      @java.lang.Override
       public GetMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GetMessage(input, extensionRegistry);
+          return new GetMessage(input, extensionRegistry);
       }
     };
 
@@ -2363,7 +2181,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.GetMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -2376,24 +2193,20 @@ public final class Metadata {
 
     /**
      * <code>string key = 1;</code>
-     * @return The key.
      */
     java.lang.String getKey();
     /**
      * <code>string key = 1;</code>
-     * @return The bytes for key.
      */
     com.google.protobuf.ByteString
         getKeyBytes();
 
     /**
      * <code>.Metadata.Record value = 2;</code>
-     * @return Whether the value field is set.
      */
     boolean hasValue();
     /**
      * <code>.Metadata.Record value = 2;</code>
-     * @return The value.
      */
     edu.msu.cse.dkvf.metadata.Metadata.Record getValue();
     /**
@@ -2404,7 +2217,7 @@ public final class Metadata {
   /**
    * Protobuf type {@code Metadata.PutMessage}
    */
-  public static final class PutMessage extends
+  public  static final class PutMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.PutMessage)
       PutMessageOrBuilder {
@@ -2418,13 +2231,6 @@ public final class Metadata {
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new PutMessage();
-    }
-
-    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -2434,9 +2240,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -2447,6 +2251,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -2466,13 +2277,6 @@ public final class Metadata {
 
               break;
             }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -2490,7 +2294,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutMessage_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutMessage_fieldAccessorTable
@@ -2502,9 +2305,7 @@ public final class Metadata {
     private volatile java.lang.Object key_;
     /**
      * <code>string key = 1;</code>
-     * @return The key.
      */
-    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -2519,9 +2320,7 @@ public final class Metadata {
     }
     /**
      * <code>string key = 1;</code>
-     * @return The bytes for key.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -2540,30 +2339,24 @@ public final class Metadata {
     private edu.msu.cse.dkvf.metadata.Metadata.Record value_;
     /**
      * <code>.Metadata.Record value = 2;</code>
-     * @return Whether the value field is set.
      */
-    @java.lang.Override
     public boolean hasValue() {
       return value_ != null;
     }
     /**
      * <code>.Metadata.Record value = 2;</code>
-     * @return The value.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Record getValue() {
       return value_ == null ? edu.msu.cse.dkvf.metadata.Metadata.Record.getDefaultInstance() : value_;
     }
     /**
      * <code>.Metadata.Record value = 2;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.RecordOrBuilder getValueOrBuilder() {
       return getValue();
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -2573,7 +2366,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getKeyBytes().isEmpty()) {
@@ -2585,7 +2377,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -2613,15 +2404,16 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.PutMessage other = (edu.msu.cse.dkvf.metadata.Metadata.PutMessage) obj;
 
-      if (!getKey()
-          .equals(other.getKey())) return false;
-      if (hasValue() != other.hasValue()) return false;
+      boolean result = true;
+      result = result && getKey()
+          .equals(other.getKey());
+      result = result && (hasValue() == other.hasValue());
       if (hasValue()) {
-        if (!getValue()
-            .equals(other.getValue())) return false;
+        result = result && getValue()
+            .equals(other.getValue());
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -2712,7 +2504,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -2720,7 +2511,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.PutMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -2744,7 +2534,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutMessage_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutMessage_fieldAccessorTable
@@ -2767,7 +2556,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         key_ = "";
@@ -2781,18 +2569,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutMessage_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutMessage getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.PutMessage.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutMessage build() {
         edu.msu.cse.dkvf.metadata.Metadata.PutMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -2801,7 +2586,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutMessage buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.PutMessage result = new edu.msu.cse.dkvf.metadata.Metadata.PutMessage(this);
         result.key_ = key_;
@@ -2814,39 +2598,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.PutMessage) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.PutMessage)other);
@@ -2870,12 +2647,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -2897,7 +2672,6 @@ public final class Metadata {
       private java.lang.Object key_ = "";
       /**
        * <code>string key = 1;</code>
-       * @return The key.
        */
       public java.lang.String getKey() {
         java.lang.Object ref = key_;
@@ -2913,7 +2687,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @return The bytes for key.
        */
       public com.google.protobuf.ByteString
           getKeyBytes() {
@@ -2930,8 +2703,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @param value The key to set.
-       * @return This builder for chaining.
        */
       public Builder setKey(
           java.lang.String value) {
@@ -2945,7 +2716,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearKey() {
         
@@ -2955,8 +2725,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @param value The bytes for key to set.
-       * @return This builder for chaining.
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {
@@ -2970,19 +2738,17 @@ public final class Metadata {
         return this;
       }
 
-      private edu.msu.cse.dkvf.metadata.Metadata.Record value_;
+      private edu.msu.cse.dkvf.metadata.Metadata.Record value_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.msu.cse.dkvf.metadata.Metadata.Record, edu.msu.cse.dkvf.metadata.Metadata.Record.Builder, edu.msu.cse.dkvf.metadata.Metadata.RecordOrBuilder> valueBuilder_;
       /**
        * <code>.Metadata.Record value = 2;</code>
-       * @return Whether the value field is set.
        */
       public boolean hasValue() {
         return valueBuilder_ != null || value_ != null;
       }
       /**
        * <code>.Metadata.Record value = 2;</code>
-       * @return The value.
        */
       public edu.msu.cse.dkvf.metadata.Metadata.Record getValue() {
         if (valueBuilder_ == null) {
@@ -3088,13 +2854,11 @@ public final class Metadata {
         }
         return valueBuilder_;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -3116,12 +2880,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<PutMessage>
         PARSER = new com.google.protobuf.AbstractParser<PutMessage>() {
-      @java.lang.Override
       public PutMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new PutMessage(input, extensionRegistry);
+          return new PutMessage(input, extensionRegistry);
       }
     };
 
@@ -3134,7 +2897,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.PutMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -3147,12 +2909,10 @@ public final class Metadata {
 
     /**
      * <code>.Metadata.GetMessage get_message = 1;</code>
-     * @return Whether the getMessage field is set.
      */
     boolean hasGetMessage();
     /**
      * <code>.Metadata.GetMessage get_message = 1;</code>
-     * @return The getMessage.
      */
     edu.msu.cse.dkvf.metadata.Metadata.GetMessage getGetMessage();
     /**
@@ -3162,12 +2922,10 @@ public final class Metadata {
 
     /**
      * <code>.Metadata.PutMessage put_message = 2;</code>
-     * @return Whether the putMessage field is set.
      */
     boolean hasPutMessage();
     /**
      * <code>.Metadata.PutMessage put_message = 2;</code>
-     * @return The putMessage.
      */
     edu.msu.cse.dkvf.metadata.Metadata.PutMessage getPutMessage();
     /**
@@ -3180,7 +2938,7 @@ public final class Metadata {
   /**
    * Protobuf type {@code Metadata.ClientMessage}
    */
-  public static final class ClientMessage extends
+  public  static final class ClientMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.ClientMessage)
       ClientMessageOrBuilder {
@@ -3193,13 +2951,6 @@ public final class Metadata {
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new ClientMessage();
-    }
-
-    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -3209,9 +2960,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -3222,6 +2971,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               edu.msu.cse.dkvf.metadata.Metadata.GetMessage.Builder subBuilder = null;
               if (messageTypeCase_ == 1) {
@@ -3250,13 +3006,6 @@ public final class Metadata {
               messageTypeCase_ = 2;
               break;
             }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -3274,7 +3023,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientMessage_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientMessage_fieldAccessorTable
@@ -3285,8 +3033,7 @@ public final class Metadata {
     private int messageTypeCase_ = 0;
     private java.lang.Object messageType_;
     public enum MessageTypeCase
-        implements com.google.protobuf.Internal.EnumLite,
-            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+        implements com.google.protobuf.Internal.EnumLite {
       GET_MESSAGE(1),
       PUT_MESSAGE(2),
       MESSAGETYPE_NOT_SET(0);
@@ -3295,8 +3042,6 @@ public final class Metadata {
         this.value = value;
       }
       /**
-       * @param value The number of the enum to look for.
-       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -3326,17 +3071,13 @@ public final class Metadata {
     public static final int GET_MESSAGE_FIELD_NUMBER = 1;
     /**
      * <code>.Metadata.GetMessage get_message = 1;</code>
-     * @return Whether the getMessage field is set.
      */
-    @java.lang.Override
     public boolean hasGetMessage() {
       return messageTypeCase_ == 1;
     }
     /**
      * <code>.Metadata.GetMessage get_message = 1;</code>
-     * @return The getMessage.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.GetMessage getGetMessage() {
       if (messageTypeCase_ == 1) {
          return (edu.msu.cse.dkvf.metadata.Metadata.GetMessage) messageType_;
@@ -3346,7 +3087,6 @@ public final class Metadata {
     /**
      * <code>.Metadata.GetMessage get_message = 1;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.GetMessageOrBuilder getGetMessageOrBuilder() {
       if (messageTypeCase_ == 1) {
          return (edu.msu.cse.dkvf.metadata.Metadata.GetMessage) messageType_;
@@ -3357,17 +3097,13 @@ public final class Metadata {
     public static final int PUT_MESSAGE_FIELD_NUMBER = 2;
     /**
      * <code>.Metadata.PutMessage put_message = 2;</code>
-     * @return Whether the putMessage field is set.
      */
-    @java.lang.Override
     public boolean hasPutMessage() {
       return messageTypeCase_ == 2;
     }
     /**
      * <code>.Metadata.PutMessage put_message = 2;</code>
-     * @return The putMessage.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.PutMessage getPutMessage() {
       if (messageTypeCase_ == 2) {
          return (edu.msu.cse.dkvf.metadata.Metadata.PutMessage) messageType_;
@@ -3377,7 +3113,6 @@ public final class Metadata {
     /**
      * <code>.Metadata.PutMessage put_message = 2;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.PutMessageOrBuilder getPutMessageOrBuilder() {
       if (messageTypeCase_ == 2) {
          return (edu.msu.cse.dkvf.metadata.Metadata.PutMessage) messageType_;
@@ -3386,7 +3121,6 @@ public final class Metadata {
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -3396,7 +3130,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (messageTypeCase_ == 1) {
@@ -3408,7 +3141,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -3437,21 +3169,24 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.ClientMessage other = (edu.msu.cse.dkvf.metadata.Metadata.ClientMessage) obj;
 
-      if (!getMessageTypeCase().equals(other.getMessageTypeCase())) return false;
+      boolean result = true;
+      result = result && getMessageTypeCase().equals(
+          other.getMessageTypeCase());
+      if (!result) return false;
       switch (messageTypeCase_) {
         case 1:
-          if (!getGetMessage()
-              .equals(other.getGetMessage())) return false;
+          result = result && getGetMessage()
+              .equals(other.getGetMessage());
           break;
         case 2:
-          if (!getPutMessage()
-              .equals(other.getPutMessage())) return false;
+          result = result && getPutMessage()
+              .equals(other.getPutMessage());
           break;
         case 0:
         default:
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -3548,7 +3283,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -3556,7 +3290,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.ClientMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -3580,7 +3313,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientMessage_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientMessage_fieldAccessorTable
@@ -3603,7 +3335,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         messageTypeCase_ = 0;
@@ -3611,18 +3342,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientMessage_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ClientMessage getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.ClientMessage.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ClientMessage build() {
         edu.msu.cse.dkvf.metadata.Metadata.ClientMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -3631,7 +3359,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ClientMessage buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.ClientMessage result = new edu.msu.cse.dkvf.metadata.Metadata.ClientMessage(this);
         if (messageTypeCase_ == 1) {
@@ -3653,39 +3380,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.ClientMessage) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.ClientMessage)other);
@@ -3715,12 +3435,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -3758,17 +3476,13 @@ public final class Metadata {
           edu.msu.cse.dkvf.metadata.Metadata.GetMessage, edu.msu.cse.dkvf.metadata.Metadata.GetMessage.Builder, edu.msu.cse.dkvf.metadata.Metadata.GetMessageOrBuilder> getMessageBuilder_;
       /**
        * <code>.Metadata.GetMessage get_message = 1;</code>
-       * @return Whether the getMessage field is set.
        */
-      @java.lang.Override
       public boolean hasGetMessage() {
         return messageTypeCase_ == 1;
       }
       /**
        * <code>.Metadata.GetMessage get_message = 1;</code>
-       * @return The getMessage.
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetMessage getGetMessage() {
         if (getMessageBuilder_ == null) {
           if (messageTypeCase_ == 1) {
@@ -3862,7 +3576,6 @@ public final class Metadata {
       /**
        * <code>.Metadata.GetMessage get_message = 1;</code>
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetMessageOrBuilder getGetMessageOrBuilder() {
         if ((messageTypeCase_ == 1) && (getMessageBuilder_ != null)) {
           return getMessageBuilder_.getMessageOrBuilder();
@@ -3899,17 +3612,13 @@ public final class Metadata {
           edu.msu.cse.dkvf.metadata.Metadata.PutMessage, edu.msu.cse.dkvf.metadata.Metadata.PutMessage.Builder, edu.msu.cse.dkvf.metadata.Metadata.PutMessageOrBuilder> putMessageBuilder_;
       /**
        * <code>.Metadata.PutMessage put_message = 2;</code>
-       * @return Whether the putMessage field is set.
        */
-      @java.lang.Override
       public boolean hasPutMessage() {
         return messageTypeCase_ == 2;
       }
       /**
        * <code>.Metadata.PutMessage put_message = 2;</code>
-       * @return The putMessage.
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutMessage getPutMessage() {
         if (putMessageBuilder_ == null) {
           if (messageTypeCase_ == 2) {
@@ -4003,7 +3712,6 @@ public final class Metadata {
       /**
        * <code>.Metadata.PutMessage put_message = 2;</code>
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutMessageOrBuilder getPutMessageOrBuilder() {
         if ((messageTypeCase_ == 2) && (putMessageBuilder_ != null)) {
           return putMessageBuilder_.getMessageOrBuilder();
@@ -4035,13 +3743,11 @@ public final class Metadata {
         onChanged();;
         return putMessageBuilder_;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -4063,12 +3769,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<ClientMessage>
         PARSER = new com.google.protobuf.AbstractParser<ClientMessage>() {
-      @java.lang.Override
       public ClientMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ClientMessage(input, extensionRegistry);
+          return new ClientMessage(input, extensionRegistry);
       }
     };
 
@@ -4081,7 +3786,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.ClientMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4094,18 +3798,15 @@ public final class Metadata {
 
     /**
      * <code>bool status = 1;</code>
-     * @return The status.
      */
     boolean getStatus();
 
     /**
      * <code>.Metadata.Record record = 2;</code>
-     * @return Whether the record field is set.
      */
     boolean hasRecord();
     /**
      * <code>.Metadata.Record record = 2;</code>
-     * @return The record.
      */
     edu.msu.cse.dkvf.metadata.Metadata.Record getRecord();
     /**
@@ -4120,7 +3821,7 @@ public final class Metadata {
    *
    * Protobuf type {@code Metadata.GetReply}
    */
-  public static final class GetReply extends
+  public  static final class GetReply extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.GetReply)
       GetReplyOrBuilder {
@@ -4130,13 +3831,7 @@ public final class Metadata {
       super(builder);
     }
     private GetReply() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new GetReply();
+      status_ = false;
     }
 
     @java.lang.Override
@@ -4149,9 +3844,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4162,6 +3855,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 8: {
 
               status_ = input.readBool();
@@ -4178,13 +3878,6 @@ public final class Metadata {
                 record_ = subBuilder.buildPartial();
               }
 
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
               break;
             }
           }
@@ -4204,7 +3897,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetReply_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetReply_fieldAccessorTable
@@ -4216,9 +3908,7 @@ public final class Metadata {
     private boolean status_;
     /**
      * <code>bool status = 1;</code>
-     * @return The status.
      */
-    @java.lang.Override
     public boolean getStatus() {
       return status_;
     }
@@ -4227,30 +3917,24 @@ public final class Metadata {
     private edu.msu.cse.dkvf.metadata.Metadata.Record record_;
     /**
      * <code>.Metadata.Record record = 2;</code>
-     * @return Whether the record field is set.
      */
-    @java.lang.Override
     public boolean hasRecord() {
       return record_ != null;
     }
     /**
      * <code>.Metadata.Record record = 2;</code>
-     * @return The record.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Record getRecord() {
       return record_ == null ? edu.msu.cse.dkvf.metadata.Metadata.Record.getDefaultInstance() : record_;
     }
     /**
      * <code>.Metadata.Record record = 2;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.RecordOrBuilder getRecordOrBuilder() {
       return getRecord();
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -4260,7 +3944,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (status_ != false) {
@@ -4272,7 +3955,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -4301,15 +3983,16 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.GetReply other = (edu.msu.cse.dkvf.metadata.Metadata.GetReply) obj;
 
-      if (getStatus()
-          != other.getStatus()) return false;
-      if (hasRecord() != other.hasRecord()) return false;
+      boolean result = true;
+      result = result && (getStatus()
+          == other.getStatus());
+      result = result && (hasRecord() == other.hasRecord());
       if (hasRecord()) {
-        if (!getRecord()
-            .equals(other.getRecord())) return false;
+        result = result && getRecord()
+            .equals(other.getRecord());
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -4401,7 +4084,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -4409,7 +4091,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.GetReply prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -4437,7 +4118,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetReply_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetReply_fieldAccessorTable
@@ -4460,7 +4140,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         status_ = false;
@@ -4474,18 +4153,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_GetReply_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetReply getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.GetReply.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetReply build() {
         edu.msu.cse.dkvf.metadata.Metadata.GetReply result = buildPartial();
         if (!result.isInitialized()) {
@@ -4494,7 +4170,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetReply buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.GetReply result = new edu.msu.cse.dkvf.metadata.Metadata.GetReply(this);
         result.status_ = status_;
@@ -4507,39 +4182,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.GetReply) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.GetReply)other);
@@ -4562,12 +4230,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -4589,16 +4255,12 @@ public final class Metadata {
       private boolean status_ ;
       /**
        * <code>bool status = 1;</code>
-       * @return The status.
        */
-      @java.lang.Override
       public boolean getStatus() {
         return status_;
       }
       /**
        * <code>bool status = 1;</code>
-       * @param value The status to set.
-       * @return This builder for chaining.
        */
       public Builder setStatus(boolean value) {
         
@@ -4608,7 +4270,6 @@ public final class Metadata {
       }
       /**
        * <code>bool status = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearStatus() {
         
@@ -4617,19 +4278,17 @@ public final class Metadata {
         return this;
       }
 
-      private edu.msu.cse.dkvf.metadata.Metadata.Record record_;
+      private edu.msu.cse.dkvf.metadata.Metadata.Record record_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.msu.cse.dkvf.metadata.Metadata.Record, edu.msu.cse.dkvf.metadata.Metadata.Record.Builder, edu.msu.cse.dkvf.metadata.Metadata.RecordOrBuilder> recordBuilder_;
       /**
        * <code>.Metadata.Record record = 2;</code>
-       * @return Whether the record field is set.
        */
       public boolean hasRecord() {
         return recordBuilder_ != null || record_ != null;
       }
       /**
        * <code>.Metadata.Record record = 2;</code>
-       * @return The record.
        */
       public edu.msu.cse.dkvf.metadata.Metadata.Record getRecord() {
         if (recordBuilder_ == null) {
@@ -4735,13 +4394,11 @@ public final class Metadata {
         }
         return recordBuilder_;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -4763,12 +4420,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<GetReply>
         PARSER = new com.google.protobuf.AbstractParser<GetReply>() {
-      @java.lang.Override
       public GetReply parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new GetReply(input, extensionRegistry);
+          return new GetReply(input, extensionRegistry);
       }
     };
 
@@ -4781,7 +4437,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.GetReply getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -4794,14 +4449,13 @@ public final class Metadata {
 
     /**
      * <code>bool status = 1;</code>
-     * @return The status.
      */
     boolean getStatus();
   }
   /**
    * Protobuf type {@code Metadata.PutReply}
    */
-  public static final class PutReply extends
+  public  static final class PutReply extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.PutReply)
       PutReplyOrBuilder {
@@ -4811,13 +4465,7 @@ public final class Metadata {
       super(builder);
     }
     private PutReply() {
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new PutReply();
+      status_ = false;
     }
 
     @java.lang.Override
@@ -4830,9 +4478,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -4843,16 +4489,16 @@ public final class Metadata {
             case 0:
               done = true;
               break;
-            case 8: {
-
-              status_ = input.readBool();
-              break;
-            }
             default: {
-              if (!parseUnknownField(
+              if (!parseUnknownFieldProto3(
                   input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
+              break;
+            }
+            case 8: {
+
+              status_ = input.readBool();
               break;
             }
           }
@@ -4872,7 +4518,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutReply_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutReply_fieldAccessorTable
@@ -4884,15 +4529,12 @@ public final class Metadata {
     private boolean status_;
     /**
      * <code>bool status = 1;</code>
-     * @return The status.
      */
-    @java.lang.Override
     public boolean getStatus() {
       return status_;
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -4902,7 +4544,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (status_ != false) {
@@ -4911,7 +4552,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -4936,10 +4576,11 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.PutReply other = (edu.msu.cse.dkvf.metadata.Metadata.PutReply) obj;
 
-      if (getStatus()
-          != other.getStatus()) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      boolean result = true;
+      result = result && (getStatus()
+          == other.getStatus());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -5027,7 +4668,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -5035,7 +4675,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.PutReply prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -5059,7 +4698,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutReply_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutReply_fieldAccessorTable
@@ -5082,7 +4720,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         status_ = false;
@@ -5090,18 +4727,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_PutReply_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutReply getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.PutReply.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutReply build() {
         edu.msu.cse.dkvf.metadata.Metadata.PutReply result = buildPartial();
         if (!result.isInitialized()) {
@@ -5110,7 +4744,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutReply buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.PutReply result = new edu.msu.cse.dkvf.metadata.Metadata.PutReply(this);
         result.status_ = status_;
@@ -5118,39 +4751,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.PutReply) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.PutReply)other);
@@ -5170,12 +4796,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -5197,16 +4821,12 @@ public final class Metadata {
       private boolean status_ ;
       /**
        * <code>bool status = 1;</code>
-       * @return The status.
        */
-      @java.lang.Override
       public boolean getStatus() {
         return status_;
       }
       /**
        * <code>bool status = 1;</code>
-       * @param value The status to set.
-       * @return This builder for chaining.
        */
       public Builder setStatus(boolean value) {
         
@@ -5216,7 +4836,6 @@ public final class Metadata {
       }
       /**
        * <code>bool status = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearStatus() {
         
@@ -5224,13 +4843,11 @@ public final class Metadata {
         onChanged();
         return this;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -5252,12 +4869,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<PutReply>
         PARSER = new com.google.protobuf.AbstractParser<PutReply>() {
-      @java.lang.Override
       public PutReply parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new PutReply(input, extensionRegistry);
+          return new PutReply(input, extensionRegistry);
       }
     };
 
@@ -5270,7 +4886,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.PutReply getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -5283,12 +4898,10 @@ public final class Metadata {
 
     /**
      * <code>.Metadata.GetReply get_reply = 1;</code>
-     * @return Whether the getReply field is set.
      */
     boolean hasGetReply();
     /**
      * <code>.Metadata.GetReply get_reply = 1;</code>
-     * @return The getReply.
      */
     edu.msu.cse.dkvf.metadata.Metadata.GetReply getGetReply();
     /**
@@ -5298,12 +4911,10 @@ public final class Metadata {
 
     /**
      * <code>.Metadata.PutReply put_reply = 2;</code>
-     * @return Whether the putReply field is set.
      */
     boolean hasPutReply();
     /**
      * <code>.Metadata.PutReply put_reply = 2;</code>
-     * @return The putReply.
      */
     edu.msu.cse.dkvf.metadata.Metadata.PutReply getPutReply();
     /**
@@ -5316,7 +4927,7 @@ public final class Metadata {
   /**
    * Protobuf type {@code Metadata.ClientReply}
    */
-  public static final class ClientReply extends
+  public  static final class ClientReply extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.ClientReply)
       ClientReplyOrBuilder {
@@ -5329,13 +4940,6 @@ public final class Metadata {
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new ClientReply();
-    }
-
-    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -5345,9 +4949,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -5358,6 +4960,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               edu.msu.cse.dkvf.metadata.Metadata.GetReply.Builder subBuilder = null;
               if (messageTypeCase_ == 1) {
@@ -5386,13 +4995,6 @@ public final class Metadata {
               messageTypeCase_ = 2;
               break;
             }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -5410,7 +5012,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientReply_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientReply_fieldAccessorTable
@@ -5421,8 +5022,7 @@ public final class Metadata {
     private int messageTypeCase_ = 0;
     private java.lang.Object messageType_;
     public enum MessageTypeCase
-        implements com.google.protobuf.Internal.EnumLite,
-            com.google.protobuf.AbstractMessage.InternalOneOfEnum {
+        implements com.google.protobuf.Internal.EnumLite {
       GET_REPLY(1),
       PUT_REPLY(2),
       MESSAGETYPE_NOT_SET(0);
@@ -5431,8 +5031,6 @@ public final class Metadata {
         this.value = value;
       }
       /**
-       * @param value The number of the enum to look for.
-       * @return The enum associated with the given number.
        * @deprecated Use {@link #forNumber(int)} instead.
        */
       @java.lang.Deprecated
@@ -5462,17 +5060,13 @@ public final class Metadata {
     public static final int GET_REPLY_FIELD_NUMBER = 1;
     /**
      * <code>.Metadata.GetReply get_reply = 1;</code>
-     * @return Whether the getReply field is set.
      */
-    @java.lang.Override
     public boolean hasGetReply() {
       return messageTypeCase_ == 1;
     }
     /**
      * <code>.Metadata.GetReply get_reply = 1;</code>
-     * @return The getReply.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.GetReply getGetReply() {
       if (messageTypeCase_ == 1) {
          return (edu.msu.cse.dkvf.metadata.Metadata.GetReply) messageType_;
@@ -5482,7 +5076,6 @@ public final class Metadata {
     /**
      * <code>.Metadata.GetReply get_reply = 1;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.GetReplyOrBuilder getGetReplyOrBuilder() {
       if (messageTypeCase_ == 1) {
          return (edu.msu.cse.dkvf.metadata.Metadata.GetReply) messageType_;
@@ -5493,17 +5086,13 @@ public final class Metadata {
     public static final int PUT_REPLY_FIELD_NUMBER = 2;
     /**
      * <code>.Metadata.PutReply put_reply = 2;</code>
-     * @return Whether the putReply field is set.
      */
-    @java.lang.Override
     public boolean hasPutReply() {
       return messageTypeCase_ == 2;
     }
     /**
      * <code>.Metadata.PutReply put_reply = 2;</code>
-     * @return The putReply.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.PutReply getPutReply() {
       if (messageTypeCase_ == 2) {
          return (edu.msu.cse.dkvf.metadata.Metadata.PutReply) messageType_;
@@ -5513,7 +5102,6 @@ public final class Metadata {
     /**
      * <code>.Metadata.PutReply put_reply = 2;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.PutReplyOrBuilder getPutReplyOrBuilder() {
       if (messageTypeCase_ == 2) {
          return (edu.msu.cse.dkvf.metadata.Metadata.PutReply) messageType_;
@@ -5522,7 +5110,6 @@ public final class Metadata {
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -5532,7 +5119,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (messageTypeCase_ == 1) {
@@ -5544,7 +5130,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -5573,21 +5158,24 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.ClientReply other = (edu.msu.cse.dkvf.metadata.Metadata.ClientReply) obj;
 
-      if (!getMessageTypeCase().equals(other.getMessageTypeCase())) return false;
+      boolean result = true;
+      result = result && getMessageTypeCase().equals(
+          other.getMessageTypeCase());
+      if (!result) return false;
       switch (messageTypeCase_) {
         case 1:
-          if (!getGetReply()
-              .equals(other.getGetReply())) return false;
+          result = result && getGetReply()
+              .equals(other.getGetReply());
           break;
         case 2:
-          if (!getPutReply()
-              .equals(other.getPutReply())) return false;
+          result = result && getPutReply()
+              .equals(other.getPutReply());
           break;
         case 0:
         default:
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -5684,7 +5272,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -5692,7 +5279,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.ClientReply prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -5716,7 +5302,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientReply_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientReply_fieldAccessorTable
@@ -5739,7 +5324,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         messageTypeCase_ = 0;
@@ -5747,18 +5331,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ClientReply_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ClientReply getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.ClientReply.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ClientReply build() {
         edu.msu.cse.dkvf.metadata.Metadata.ClientReply result = buildPartial();
         if (!result.isInitialized()) {
@@ -5767,7 +5348,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ClientReply buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.ClientReply result = new edu.msu.cse.dkvf.metadata.Metadata.ClientReply(this);
         if (messageTypeCase_ == 1) {
@@ -5789,39 +5369,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.ClientReply) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.ClientReply)other);
@@ -5851,12 +5424,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -5894,17 +5465,13 @@ public final class Metadata {
           edu.msu.cse.dkvf.metadata.Metadata.GetReply, edu.msu.cse.dkvf.metadata.Metadata.GetReply.Builder, edu.msu.cse.dkvf.metadata.Metadata.GetReplyOrBuilder> getReplyBuilder_;
       /**
        * <code>.Metadata.GetReply get_reply = 1;</code>
-       * @return Whether the getReply field is set.
        */
-      @java.lang.Override
       public boolean hasGetReply() {
         return messageTypeCase_ == 1;
       }
       /**
        * <code>.Metadata.GetReply get_reply = 1;</code>
-       * @return The getReply.
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetReply getGetReply() {
         if (getReplyBuilder_ == null) {
           if (messageTypeCase_ == 1) {
@@ -5998,7 +5565,6 @@ public final class Metadata {
       /**
        * <code>.Metadata.GetReply get_reply = 1;</code>
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.GetReplyOrBuilder getGetReplyOrBuilder() {
         if ((messageTypeCase_ == 1) && (getReplyBuilder_ != null)) {
           return getReplyBuilder_.getMessageOrBuilder();
@@ -6035,17 +5601,13 @@ public final class Metadata {
           edu.msu.cse.dkvf.metadata.Metadata.PutReply, edu.msu.cse.dkvf.metadata.Metadata.PutReply.Builder, edu.msu.cse.dkvf.metadata.Metadata.PutReplyOrBuilder> putReplyBuilder_;
       /**
        * <code>.Metadata.PutReply put_reply = 2;</code>
-       * @return Whether the putReply field is set.
        */
-      @java.lang.Override
       public boolean hasPutReply() {
         return messageTypeCase_ == 2;
       }
       /**
        * <code>.Metadata.PutReply put_reply = 2;</code>
-       * @return The putReply.
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutReply getPutReply() {
         if (putReplyBuilder_ == null) {
           if (messageTypeCase_ == 2) {
@@ -6139,7 +5701,6 @@ public final class Metadata {
       /**
        * <code>.Metadata.PutReply put_reply = 2;</code>
        */
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.PutReplyOrBuilder getPutReplyOrBuilder() {
         if ((messageTypeCase_ == 2) && (putReplyBuilder_ != null)) {
           return putReplyBuilder_.getMessageOrBuilder();
@@ -6171,13 +5732,11 @@ public final class Metadata {
         onChanged();;
         return putReplyBuilder_;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -6199,12 +5758,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<ClientReply>
         PARSER = new com.google.protobuf.AbstractParser<ClientReply>() {
-      @java.lang.Override
       public ClientReply parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ClientReply(input, extensionRegistry);
+          return new ClientReply(input, extensionRegistry);
       }
     };
 
@@ -6217,7 +5775,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.ClientReply getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -6230,24 +5787,20 @@ public final class Metadata {
 
     /**
      * <code>string key = 1;</code>
-     * @return The key.
      */
     java.lang.String getKey();
     /**
      * <code>string key = 1;</code>
-     * @return The bytes for key.
      */
     com.google.protobuf.ByteString
         getKeyBytes();
 
     /**
      * <code>.Metadata.Record rec = 2;</code>
-     * @return Whether the rec field is set.
      */
     boolean hasRec();
     /**
      * <code>.Metadata.Record rec = 2;</code>
-     * @return The rec.
      */
     edu.msu.cse.dkvf.metadata.Metadata.Record getRec();
     /**
@@ -6257,7 +5810,6 @@ public final class Metadata {
 
     /**
      * <code>int32 serverId = 3;</code>
-     * @return The serverId.
      */
     int getServerId();
 
@@ -6293,7 +5845,7 @@ public final class Metadata {
    *
    * Protobuf type {@code Metadata.ReplicateMessage}
    */
-  public static final class ReplicateMessage extends
+  public  static final class ReplicateMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.ReplicateMessage)
       ReplicateMessageOrBuilder {
@@ -6304,14 +5856,8 @@ public final class Metadata {
     }
     private ReplicateMessage() {
       key_ = "";
+      serverId_ = 0;
       timestamps_ = java.util.Collections.emptyList();
-    }
-
-    @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new ReplicateMessage();
     }
 
     @java.lang.Override
@@ -6324,9 +5870,6 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
       int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
@@ -6338,6 +5881,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               java.lang.String s = input.readStringRequireUtf8();
 
@@ -6363,19 +5913,12 @@ public final class Metadata {
               break;
             }
             case 34: {
-              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
                 timestamps_ = new java.util.ArrayList<edu.msu.cse.dkvf.metadata.Metadata.Dependency>();
-                mutable_bitField0_ |= 0x00000001;
+                mutable_bitField0_ |= 0x00000008;
               }
               timestamps_.add(
                   input.readMessage(edu.msu.cse.dkvf.metadata.Metadata.Dependency.parser(), extensionRegistry));
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
               break;
             }
           }
@@ -6386,7 +5929,7 @@ public final class Metadata {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
           timestamps_ = java.util.Collections.unmodifiableList(timestamps_);
         }
         this.unknownFields = unknownFields.build();
@@ -6398,7 +5941,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ReplicateMessage_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ReplicateMessage_fieldAccessorTable
@@ -6406,13 +5948,12 @@ public final class Metadata {
               edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage.class, edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage.Builder.class);
     }
 
+    private int bitField0_;
     public static final int KEY_FIELD_NUMBER = 1;
     private volatile java.lang.Object key_;
     /**
      * <code>string key = 1;</code>
-     * @return The key.
      */
-    @java.lang.Override
     public java.lang.String getKey() {
       java.lang.Object ref = key_;
       if (ref instanceof java.lang.String) {
@@ -6427,9 +5968,7 @@ public final class Metadata {
     }
     /**
      * <code>string key = 1;</code>
-     * @return The bytes for key.
      */
-    @java.lang.Override
     public com.google.protobuf.ByteString
         getKeyBytes() {
       java.lang.Object ref = key_;
@@ -6448,24 +5987,19 @@ public final class Metadata {
     private edu.msu.cse.dkvf.metadata.Metadata.Record rec_;
     /**
      * <code>.Metadata.Record rec = 2;</code>
-     * @return Whether the rec field is set.
      */
-    @java.lang.Override
     public boolean hasRec() {
       return rec_ != null;
     }
     /**
      * <code>.Metadata.Record rec = 2;</code>
-     * @return The rec.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Record getRec() {
       return rec_ == null ? edu.msu.cse.dkvf.metadata.Metadata.Record.getDefaultInstance() : rec_;
     }
     /**
      * <code>.Metadata.Record rec = 2;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.RecordOrBuilder getRecOrBuilder() {
       return getRec();
     }
@@ -6474,9 +6008,7 @@ public final class Metadata {
     private int serverId_;
     /**
      * <code>int32 serverId = 3;</code>
-     * @return The serverId.
      */
-    @java.lang.Override
     public int getServerId() {
       return serverId_;
     }
@@ -6486,14 +6018,12 @@ public final class Metadata {
     /**
      * <code>repeated .Metadata.Dependency timestamps = 4;</code>
      */
-    @java.lang.Override
     public java.util.List<edu.msu.cse.dkvf.metadata.Metadata.Dependency> getTimestampsList() {
       return timestamps_;
     }
     /**
      * <code>repeated .Metadata.Dependency timestamps = 4;</code>
      */
-    @java.lang.Override
     public java.util.List<? extends edu.msu.cse.dkvf.metadata.Metadata.DependencyOrBuilder> 
         getTimestampsOrBuilderList() {
       return timestamps_;
@@ -6501,28 +6031,24 @@ public final class Metadata {
     /**
      * <code>repeated .Metadata.Dependency timestamps = 4;</code>
      */
-    @java.lang.Override
     public int getTimestampsCount() {
       return timestamps_.size();
     }
     /**
      * <code>repeated .Metadata.Dependency timestamps = 4;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.Dependency getTimestamps(int index) {
       return timestamps_.get(index);
     }
     /**
      * <code>repeated .Metadata.Dependency timestamps = 4;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.DependencyOrBuilder getTimestampsOrBuilder(
         int index) {
       return timestamps_.get(index);
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -6532,7 +6058,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (!getKeyBytes().isEmpty()) {
@@ -6550,7 +6075,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -6586,19 +6110,20 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage other = (edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage) obj;
 
-      if (!getKey()
-          .equals(other.getKey())) return false;
-      if (hasRec() != other.hasRec()) return false;
+      boolean result = true;
+      result = result && getKey()
+          .equals(other.getKey());
+      result = result && (hasRec() == other.hasRec());
       if (hasRec()) {
-        if (!getRec()
-            .equals(other.getRec())) return false;
+        result = result && getRec()
+            .equals(other.getRec());
       }
-      if (getServerId()
-          != other.getServerId()) return false;
-      if (!getTimestampsList()
-          .equals(other.getTimestampsList())) return false;
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && (getServerId()
+          == other.getServerId());
+      result = result && getTimestampsList()
+          .equals(other.getTimestampsList());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -6695,7 +6220,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -6703,7 +6227,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -6732,7 +6255,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ReplicateMessage_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ReplicateMessage_fieldAccessorTable
@@ -6756,7 +6278,6 @@ public final class Metadata {
           getTimestampsFieldBuilder();
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         key_ = "";
@@ -6771,25 +6292,22 @@ public final class Metadata {
 
         if (timestampsBuilder_ == null) {
           timestamps_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000008);
         } else {
           timestampsBuilder_.clear();
         }
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ReplicateMessage_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage build() {
         edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -6798,10 +6316,10 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage result = new edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage(this);
         int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
         result.key_ = key_;
         if (recBuilder_ == null) {
           result.rec_ = rec_;
@@ -6810,51 +6328,45 @@ public final class Metadata {
         }
         result.serverId_ = serverId_;
         if (timestampsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) != 0)) {
+          if (((bitField0_ & 0x00000008) == 0x00000008)) {
             timestamps_ = java.util.Collections.unmodifiableList(timestamps_);
-            bitField0_ = (bitField0_ & ~0x00000001);
+            bitField0_ = (bitField0_ & ~0x00000008);
           }
           result.timestamps_ = timestamps_;
         } else {
           result.timestamps_ = timestampsBuilder_.build();
         }
+        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage)other);
@@ -6880,7 +6392,7 @@ public final class Metadata {
           if (!other.timestamps_.isEmpty()) {
             if (timestamps_.isEmpty()) {
               timestamps_ = other.timestamps_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000008);
             } else {
               ensureTimestampsIsMutable();
               timestamps_.addAll(other.timestamps_);
@@ -6893,7 +6405,7 @@ public final class Metadata {
               timestampsBuilder_.dispose();
               timestampsBuilder_ = null;
               timestamps_ = other.timestamps_;
-              bitField0_ = (bitField0_ & ~0x00000001);
+              bitField0_ = (bitField0_ & ~0x00000008);
               timestampsBuilder_ = 
                 com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
                    getTimestampsFieldBuilder() : null;
@@ -6907,12 +6419,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -6935,7 +6445,6 @@ public final class Metadata {
       private java.lang.Object key_ = "";
       /**
        * <code>string key = 1;</code>
-       * @return The key.
        */
       public java.lang.String getKey() {
         java.lang.Object ref = key_;
@@ -6951,7 +6460,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @return The bytes for key.
        */
       public com.google.protobuf.ByteString
           getKeyBytes() {
@@ -6968,8 +6476,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @param value The key to set.
-       * @return This builder for chaining.
        */
       public Builder setKey(
           java.lang.String value) {
@@ -6983,7 +6489,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @return This builder for chaining.
        */
       public Builder clearKey() {
         
@@ -6993,8 +6498,6 @@ public final class Metadata {
       }
       /**
        * <code>string key = 1;</code>
-       * @param value The bytes for key to set.
-       * @return This builder for chaining.
        */
       public Builder setKeyBytes(
           com.google.protobuf.ByteString value) {
@@ -7008,19 +6511,17 @@ public final class Metadata {
         return this;
       }
 
-      private edu.msu.cse.dkvf.metadata.Metadata.Record rec_;
+      private edu.msu.cse.dkvf.metadata.Metadata.Record rec_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.msu.cse.dkvf.metadata.Metadata.Record, edu.msu.cse.dkvf.metadata.Metadata.Record.Builder, edu.msu.cse.dkvf.metadata.Metadata.RecordOrBuilder> recBuilder_;
       /**
        * <code>.Metadata.Record rec = 2;</code>
-       * @return Whether the rec field is set.
        */
       public boolean hasRec() {
         return recBuilder_ != null || rec_ != null;
       }
       /**
        * <code>.Metadata.Record rec = 2;</code>
-       * @return The rec.
        */
       public edu.msu.cse.dkvf.metadata.Metadata.Record getRec() {
         if (recBuilder_ == null) {
@@ -7130,16 +6631,12 @@ public final class Metadata {
       private int serverId_ ;
       /**
        * <code>int32 serverId = 3;</code>
-       * @return The serverId.
        */
-      @java.lang.Override
       public int getServerId() {
         return serverId_;
       }
       /**
        * <code>int32 serverId = 3;</code>
-       * @param value The serverId to set.
-       * @return This builder for chaining.
        */
       public Builder setServerId(int value) {
         
@@ -7149,7 +6646,6 @@ public final class Metadata {
       }
       /**
        * <code>int32 serverId = 3;</code>
-       * @return This builder for chaining.
        */
       public Builder clearServerId() {
         
@@ -7161,9 +6657,9 @@ public final class Metadata {
       private java.util.List<edu.msu.cse.dkvf.metadata.Metadata.Dependency> timestamps_ =
         java.util.Collections.emptyList();
       private void ensureTimestampsIsMutable() {
-        if (!((bitField0_ & 0x00000001) != 0)) {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
           timestamps_ = new java.util.ArrayList<edu.msu.cse.dkvf.metadata.Metadata.Dependency>(timestamps_);
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000008;
          }
       }
 
@@ -7313,7 +6809,7 @@ public final class Metadata {
       public Builder clearTimestamps() {
         if (timestampsBuilder_ == null) {
           timestamps_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
+          bitField0_ = (bitField0_ & ~0x00000008);
           onChanged();
         } else {
           timestampsBuilder_.clear();
@@ -7390,20 +6886,18 @@ public final class Metadata {
           timestampsBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
               edu.msu.cse.dkvf.metadata.Metadata.Dependency, edu.msu.cse.dkvf.metadata.Metadata.Dependency.Builder, edu.msu.cse.dkvf.metadata.Metadata.DependencyOrBuilder>(
                   timestamps_,
-                  ((bitField0_ & 0x00000001) != 0),
+                  ((bitField0_ & 0x00000008) == 0x00000008),
                   getParentForChildren(),
                   isClean());
           timestamps_ = null;
         }
         return timestampsBuilder_;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -7425,12 +6919,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<ReplicateMessage>
         PARSER = new com.google.protobuf.AbstractParser<ReplicateMessage>() {
-      @java.lang.Override
       public ReplicateMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ReplicateMessage(input, extensionRegistry);
+          return new ReplicateMessage(input, extensionRegistry);
       }
     };
 
@@ -7443,7 +6936,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -7456,12 +6948,10 @@ public final class Metadata {
 
     /**
      * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
-     * @return Whether the replicateMessage field is set.
      */
     boolean hasReplicateMessage();
     /**
      * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
-     * @return The replicateMessage.
      */
     edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage getReplicateMessage();
     /**
@@ -7472,7 +6962,7 @@ public final class Metadata {
   /**
    * Protobuf type {@code Metadata.ServerMessage}
    */
-  public static final class ServerMessage extends
+  public  static final class ServerMessage extends
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:Metadata.ServerMessage)
       ServerMessageOrBuilder {
@@ -7485,13 +6975,6 @@ public final class Metadata {
     }
 
     @java.lang.Override
-    @SuppressWarnings({"unused"})
-    protected java.lang.Object newInstance(
-        UnusedPrivateParameter unused) {
-      return new ServerMessage();
-    }
-
-    @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
       return this.unknownFields;
@@ -7501,9 +6984,7 @@ public final class Metadata {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -7514,6 +6995,13 @@ public final class Metadata {
             case 0:
               done = true;
               break;
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
             case 10: {
               edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage.Builder subBuilder = null;
               if (replicateMessage_ != null) {
@@ -7525,13 +7013,6 @@ public final class Metadata {
                 replicateMessage_ = subBuilder.buildPartial();
               }
 
-              break;
-            }
-            default: {
-              if (!parseUnknownField(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
               break;
             }
           }
@@ -7551,7 +7032,6 @@ public final class Metadata {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ServerMessage_descriptor;
     }
 
-    @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
       return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ServerMessage_fieldAccessorTable
@@ -7563,30 +7043,24 @@ public final class Metadata {
     private edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage replicateMessage_;
     /**
      * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
-     * @return Whether the replicateMessage field is set.
      */
-    @java.lang.Override
     public boolean hasReplicateMessage() {
       return replicateMessage_ != null;
     }
     /**
      * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
-     * @return The replicateMessage.
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage getReplicateMessage() {
       return replicateMessage_ == null ? edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage.getDefaultInstance() : replicateMessage_;
     }
     /**
      * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
      */
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessageOrBuilder getReplicateMessageOrBuilder() {
       return getReplicateMessage();
     }
 
     private byte memoizedIsInitialized = -1;
-    @java.lang.Override
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized == 1) return true;
@@ -7596,7 +7070,6 @@ public final class Metadata {
       return true;
     }
 
-    @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       if (replicateMessage_ != null) {
@@ -7605,7 +7078,6 @@ public final class Metadata {
       unknownFields.writeTo(output);
     }
 
-    @java.lang.Override
     public int getSerializedSize() {
       int size = memoizedSize;
       if (size != -1) return size;
@@ -7630,13 +7102,14 @@ public final class Metadata {
       }
       edu.msu.cse.dkvf.metadata.Metadata.ServerMessage other = (edu.msu.cse.dkvf.metadata.Metadata.ServerMessage) obj;
 
-      if (hasReplicateMessage() != other.hasReplicateMessage()) return false;
+      boolean result = true;
+      result = result && (hasReplicateMessage() == other.hasReplicateMessage());
       if (hasReplicateMessage()) {
-        if (!getReplicateMessage()
-            .equals(other.getReplicateMessage())) return false;
+        result = result && getReplicateMessage()
+            .equals(other.getReplicateMessage());
       }
-      if (!unknownFields.equals(other.unknownFields)) return false;
-      return true;
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
     }
 
     @java.lang.Override
@@ -7725,7 +7198,6 @@ public final class Metadata {
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
 
-    @java.lang.Override
     public Builder newBuilderForType() { return newBuilder(); }
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
@@ -7733,7 +7205,6 @@ public final class Metadata {
     public static Builder newBuilder(edu.msu.cse.dkvf.metadata.Metadata.ServerMessage prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
-    @java.lang.Override
     public Builder toBuilder() {
       return this == DEFAULT_INSTANCE
           ? new Builder() : new Builder().mergeFrom(this);
@@ -7757,7 +7228,6 @@ public final class Metadata {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ServerMessage_descriptor;
       }
 
-      @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ServerMessage_fieldAccessorTable
@@ -7780,7 +7250,6 @@ public final class Metadata {
                 .alwaysUseFieldBuilders) {
         }
       }
-      @java.lang.Override
       public Builder clear() {
         super.clear();
         if (replicateMessageBuilder_ == null) {
@@ -7792,18 +7261,15 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.internal_static_Metadata_ServerMessage_descriptor;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ServerMessage getDefaultInstanceForType() {
         return edu.msu.cse.dkvf.metadata.Metadata.ServerMessage.getDefaultInstance();
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ServerMessage build() {
         edu.msu.cse.dkvf.metadata.Metadata.ServerMessage result = buildPartial();
         if (!result.isInitialized()) {
@@ -7812,7 +7278,6 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public edu.msu.cse.dkvf.metadata.Metadata.ServerMessage buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.ServerMessage result = new edu.msu.cse.dkvf.metadata.Metadata.ServerMessage(this);
         if (replicateMessageBuilder_ == null) {
@@ -7824,39 +7289,32 @@ public final class Metadata {
         return result;
       }
 
-      @java.lang.Override
       public Builder clone() {
-        return super.clone();
+        return (Builder) super.clone();
       }
-      @java.lang.Override
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.setField(field, value);
+        return (Builder) super.setField(field, value);
       }
-      @java.lang.Override
       public Builder clearField(
           com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return super.clearField(field);
+        return (Builder) super.clearField(field);
       }
-      @java.lang.Override
       public Builder clearOneof(
           com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return super.clearOneof(oneof);
+        return (Builder) super.clearOneof(oneof);
       }
-      @java.lang.Override
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           int index, java.lang.Object value) {
-        return super.setRepeatedField(field, index, value);
+        return (Builder) super.setRepeatedField(field, index, value);
       }
-      @java.lang.Override
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
           java.lang.Object value) {
-        return super.addRepeatedField(field, value);
+        return (Builder) super.addRepeatedField(field, value);
       }
-      @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
         if (other instanceof edu.msu.cse.dkvf.metadata.Metadata.ServerMessage) {
           return mergeFrom((edu.msu.cse.dkvf.metadata.Metadata.ServerMessage)other);
@@ -7876,12 +7334,10 @@ public final class Metadata {
         return this;
       }
 
-      @java.lang.Override
       public final boolean isInitialized() {
         return true;
       }
 
-      @java.lang.Override
       public Builder mergeFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
@@ -7900,19 +7356,17 @@ public final class Metadata {
         return this;
       }
 
-      private edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage replicateMessage_;
+      private edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage replicateMessage_ = null;
       private com.google.protobuf.SingleFieldBuilderV3<
           edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage, edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage.Builder, edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessageOrBuilder> replicateMessageBuilder_;
       /**
        * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
-       * @return Whether the replicateMessage field is set.
        */
       public boolean hasReplicateMessage() {
         return replicateMessageBuilder_ != null || replicateMessage_ != null;
       }
       /**
        * <code>.Metadata.ReplicateMessage replicate_message = 1;</code>
-       * @return The replicateMessage.
        */
       public edu.msu.cse.dkvf.metadata.Metadata.ReplicateMessage getReplicateMessage() {
         if (replicateMessageBuilder_ == null) {
@@ -8018,13 +7472,11 @@ public final class Metadata {
         }
         return replicateMessageBuilder_;
       }
-      @java.lang.Override
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
-      @java.lang.Override
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.mergeUnknownFields(unknownFields);
@@ -8046,12 +7498,11 @@ public final class Metadata {
 
     private static final com.google.protobuf.Parser<ServerMessage>
         PARSER = new com.google.protobuf.AbstractParser<ServerMessage>() {
-      @java.lang.Override
       public ServerMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new ServerMessage(input, extensionRegistry);
+          return new ServerMessage(input, extensionRegistry);
       }
     };
 
@@ -8064,7 +7515,6 @@ public final class Metadata {
       return PARSER;
     }
 
-    @java.lang.Override
     public edu.msu.cse.dkvf.metadata.Metadata.ServerMessage getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
@@ -8144,7 +7594,7 @@ public final class Metadata {
       ".Record\"y\n\rClientMessage\022+\n\013get_message\030" +
       "\001 \001(\0132\024.Metadata.GetMessageH\000\022+\n\013put_mes" +
       "sage\030\002 \001(\0132\024.Metadata.PutMessageH\000B\016\n\014me" +
-      "ssage_type\"<\n\010GetReply\022\016\n\006status\030\001 \001(\010\022 " +
+      "ssage_type\"<\n\010GetReply\022\016\n\006status\030\001 \001(\010\022 ",
       "\n\006record\030\002 \001(\0132\020.Metadata.Record\"\032\n\010PutR" +
       "eply\022\016\n\006status\030\001 \001(\010\"o\n\013ClientReply\022\'\n\tg" +
       "et_reply\030\001 \001(\0132\022.Metadata.GetReplyH\000\022\'\n\t" +
@@ -8154,13 +7604,21 @@ public final class Metadata {
       "\010serverId\030\003 \001(\005\022(\n\ntimestamps\030\004 \003(\0132\024.Me" +
       "tadata.Dependency\"F\n\rServerMessage\0225\n\021re" +
       "plicate_message\030\001 \001(\0132\032.Metadata.Replica" +
-      "teMessageB%\n\031edu.msu.cse.dkvf.metadataB\010" +
+      "teMessageB%\n\031edu.msu.cse.dkvf.metadataB\010",
       "Metadatab\006proto3"
     };
-    descriptor = com.google.protobuf.Descriptors.FileDescriptor
+    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
+        new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
+          public com.google.protobuf.ExtensionRegistry assignDescriptors(
+              com.google.protobuf.Descriptors.FileDescriptor root) {
+            descriptor = root;
+            return null;
+          }
+        };
+    com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-        });
+        }, assigner);
     internal_static_Metadata_Edge_descriptor =
       getDescriptor().getMessageTypes().get(0);
     internal_static_Metadata_Edge_fieldAccessorTable = new
