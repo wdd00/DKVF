@@ -180,6 +180,7 @@ public class ReplicaCentricServer extends DKVFServer {
                         continue;
                     path.add(serverId);
                     checkEdges(path);
+                    path.remove(path.size()-1);
                 } else if (visited[i-1]) {
                     // Current loop doesn't contain serverId. Ignore;
                     continue;
