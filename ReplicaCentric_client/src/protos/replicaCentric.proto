@@ -20,6 +20,8 @@ message Dependency {
 // Edge-index timestamps guarantee the consistency.
 message Record {
   bytes value = 1;
+  int32 clientId = 2;
+  int64 sourceOpIdx = 3;
 }
 
 //-----------------------Client Message-------------------
@@ -47,6 +49,7 @@ message GetReply {
 
 message PutReply {
   bool status = 1;
+  int64 opIdx = 2;
 }
 
 message ClientReply {

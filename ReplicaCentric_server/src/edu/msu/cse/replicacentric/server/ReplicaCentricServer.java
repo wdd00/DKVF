@@ -10,66 +10,13 @@ import javafx.util.Pair;
 import java.security.NoSuchAlgorithmException;
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static edu.msu.cse.dkvf.metadata.Metadata.*;
 
 public class ReplicaCentricServer extends DKVFServer {
-
-    class pendings implements Runnable {
-        //private Thread t;
-
-        public void run() {
-            Iterator<ReplicateMessage> iterator = pendingReplicateMessages.iterator();
-            while (iterator.hasNext()){
-                ReplicateMessage rm = iterator.next();
-                boolean updateNow = false, flag = true;
-                Edge edge = Edge.newBuilder().setVertex1(rm.getServerId()).setVertex2(serverId).build();
-                // This is used to store the edges ∈ E_serverId ∩ E_rm.getServerId().
-                List<Pair<Edge, Integer>> intersectEdges = new ArrayList<>();
-
-                for (Dependency dep: rm.getTimestampsList()) {
-                    if (dep.getEdge().getVertex2() == serverId) {
-                        intersectEdges.add(new Pair<>(dep.getEdge(), (int) dep.getVersion()));
-                    }
-                    if (dep.getEdge() == edge) {
-                        if (timestamp.get(edge) < dep.getVersion() - 1) {
-                            // This replicate message needs to wait for this server's update later.
-                            break;
-                        } else if (timestamp.get(edge) >= dep.getVersion()) {
-                            // This server is newer than this replicate message.
-                            synchronized (pendingReplicateMessages) {
-                                iterator.remove();
-                            }
-                            break;
-                        } else {
-                            updateNow = true;
-                        }
-                    } else if (dep.getEdge().getVertex2() == serverId && timestamp.get(dep.getEdge()) < dep.getVersion()) {
-                        flag = false;
-                        break;
-                    }
-                }
-                if (updateNow && flag) {
-                    // Write the value of this replicate message to local storage.
-                    Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
-                    if (ss == Storage.StorageStatus.SUCCESS) {
-                        // update the timestamp of current server.
-                        for (Pair<Edge, Integer> e: intersectEdges) {
-                            timestamp.put(e.getKey(), Math.max(timestamp.get(e.getKey()), e.getValue()));
-                        }
-                        protocolLOGGER.finer(MessageFormat.format("Replicate Message {0} is handled and removed", rm));
-                        // Remove this completed replicate message.
-                        synchronized (pendingReplicateMessages) {
-                            iterator.remove();
-                        }
-                    }
-                }
-                intersectEdges.clear();
-            }
-        }
-    }
-
     int serverId;
     int numOfServers;
     int numOfBuckets;
@@ -81,6 +28,12 @@ public class ReplicaCentricServer extends DKVFServer {
     HashSet<Integer>[][] AdMatrix;
     List<ReplicateMessage> pendingReplicateMessages;
     List<HashSet<Integer>> sharedGraph;
+    // Timestamp lock
+    ReadWriteLock lock = new ReentrantReadWriteLock();
+    Lock writeLock = lock.writeLock();
+    Lock readLock = lock.readLock();
+    // The index of each operation. (Easy to construct the happened-before graph)
+    int opIdx = 1;
 
     /**
      * Constructor for DKVFServer
@@ -112,14 +65,8 @@ public class ReplicaCentricServer extends DKVFServer {
             sharedGraph.add(keys);
         }
 
-
-
         generateDependencies();
-
-        // Run the parallel thread to check pending replicate messages.
-        pendings p = new pendings();
-        Thread t = new Thread(p);
-        t.start();
+        //protocolLOGGER.info(Thread.currentThread().getName() + " Timestamp of server" + serverId + ": " + timestamp);
     }
 
     // This function generates the timestamp to track of this server according to the sharedGraph.
@@ -267,7 +214,7 @@ public class ReplicaCentricServer extends DKVFServer {
     }
 
     @Override
-    public void handleClientMessage(ClientMessageAgent cma) throws NoSuchAlgorithmException {
+    public void handleClientMessage(ClientMessageAgent cma) {
         if (cma.getClientMessage().hasGetMessage()) {
             handleGetMessage(cma);
         } else if(cma.getClientMessage().hasPutMessage()) {
@@ -275,20 +222,30 @@ public class ReplicaCentricServer extends DKVFServer {
         }
     }
 
-    private void handlePutMessage(ClientMessageAgent cma) throws NoSuchAlgorithmException {
+    private void handlePutMessage(ClientMessageAgent cma) {
         PutMessage pm = cma.getClientMessage().getPutMessage();
 
         //Firstly, insert the value into the local server.
         //Currently, we only allow the specified keys to insert in current server.
         Storage.StorageStatus ss = Storage.StorageStatus.FAILURE;
-        if (sharedGraph.get(serverId-1).contains(findBucket(pm.getKey()))) {
+        int bucket = -1;
+        try {
+            bucket = findBucket(pm.getKey());
+        } catch (NoSuchAlgorithmException e) {
+            protocolLOGGER.severe("Problem finding bucket for key " + pm.getKey());
+        }
+        if (sharedGraph.get(serverId-1).contains(bucket)) {
+            pm = PutMessage.newBuilder().setKey(pm.getKey()).setValue(Record.newBuilder().setValue(pm.getValue().getValue()).
+                    setClientId(pm.getValue().getClientId()).setSourceOpIdx(opIdx).build()).build();
             ss = insert(pm.getKey(), pm.getValue());
         }
 
         // Initialize the client reply;
         ClientReply cr = null;
         if (ss == Storage.StorageStatus.SUCCESS) {
-            cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).build()).build();
+            protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
+            cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).setOpIdx(opIdx).build()).build();
+            opIdx++;
         } else {
             cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
             cma.sendReply(cr);
@@ -296,20 +253,46 @@ public class ReplicaCentricServer extends DKVFServer {
         }
 
         // Secondly, update timestamp.
-        for (Map.Entry<Edge, Integer> dep: timestamp.entrySet()) {
-            int v1 = dep.getKey().getVertex1(), v2 = dep.getKey().getVertex2();
-
-            if (v1 == serverId && AdMatrix[v1-1][v2-1].contains(findBucket(pm.getKey()))) {
-                timestamp.put(dep.getKey(), dep.getValue() + 1);
+        try {
+            writeLock.lock();
+            for (Map.Entry<Edge, Integer> dep: timestamp.entrySet()) {
+                int v1 = dep.getKey().getVertex1(), v2 = dep.getKey().getVertex2();
+                bucket = -1;
+                try {
+                    bucket = findBucket(pm.getKey());
+                } catch (NoSuchAlgorithmException e) {
+                    protocolLOGGER.severe("Problem finding bucket for key " + pm.getKey());
+                }
+                if (v1 == serverId && AdMatrix[v1-1][v2-1].contains(bucket)) {
+                    timestamp.put(dep.getKey(), dep.getValue() + 1);
+                }
             }
+        } finally {
+            writeLock.unlock();
         }
 
         // Thirdly, send replicate message to other replicas which also contain key.
+        List<Dependency> temp_timestamps = new ArrayList<>();
+        try {
+            readLock.lock();
+            for (Map.Entry<Edge, Integer> entry: timestamp.entrySet()) {
+                Dependency dep = Dependency.newBuilder().setEdge(entry.getKey()).setVersion(entry.getValue()).build();
+                temp_timestamps.add(dep);
+            }
+        } finally {
+            readLock.unlock();
+        }
         ServerMessage sm = ServerMessage.newBuilder().setReplicateMessage(
-                ReplicateMessage.newBuilder().setKey(pm.getKey()).setRec(pm.getValue()).setServerId(serverId).addAllTimestamps((Iterable<? extends Dependency>) timestamp).build()).build();
+                ReplicateMessage.newBuilder().setKey(pm.getKey()).setRec(pm.getValue()).setServerId(serverId).
+                        addAllTimestamps(temp_timestamps).build()).build();
         for (int i = 0; i < numOfServers; i++) {
-            if(AdMatrix[serverId-1][i].contains(findBucket(pm.getKey()))) {
-                protocolLOGGER.finer(MessageFormat.format("send replicate message to server{0}", i+1));
+            bucket = -1;
+            try {
+                bucket = findBucket(pm.getKey());
+            } catch (NoSuchAlgorithmException e) {
+                protocolLOGGER.severe("Problem finding bucket for key " + pm.getKey());
+            }
+            if(AdMatrix[serverId-1][i].contains(bucket)) {
                 sendToServerViaChannel(Integer.toString(i+1), sm);
             }
         }
@@ -349,17 +332,64 @@ public class ReplicaCentricServer extends DKVFServer {
     }
 
     private void handleReplicateMesssage(ServerMessage sm) {
-        protocolLOGGER.finer(MessageFormat.format("Received replicate message: {0}", sm.toString()));
         ReplicateMessage rm = sm.getReplicateMessage();
-        protocolLOGGER.finer(MessageFormat.format("Replicate Message {0} is received", rm.toString()));
 
         // Firstly, add replicate message to pendings.
-        synchronized (pendingReplicateMessages) {
-            pendingReplicateMessages.add(rm);
+        pendingReplicateMessages.add(rm);
+        Iterator<ReplicateMessage> iterator = pendingReplicateMessages.iterator();
+        while (iterator.hasNext()){
+            rm = iterator.next();
+            boolean updateNow = false, flag = true;
+
+            // This is used to store the edges ∈ E_serverId ∩ E_rm.getServerId().
+            List<Pair<Edge, Integer>> intersectEdges = new ArrayList<>();
+
+            try {
+                readLock.lock();
+                for (Dependency dep: rm.getTimestampsList()) {
+                    if (timestamp.containsKey(dep.getEdge())) {
+                        intersectEdges.add(new Pair<>(dep.getEdge(), (int) dep.getVersion()));
+                    }
+                    if (dep.getEdge().getVertex1() == rm.getServerId() && dep.getEdge().getVertex2() == serverId) {
+                        if (timestamp.get(dep.getEdge()) < dep.getVersion() - 1) {
+                            // This replicate message needs to wait for this server's update later.
+                            break;
+                        } else if (timestamp.get(dep.getEdge()) >= dep.getVersion()) {
+                            // This server is newer than this replicate message.
+                            iterator.remove();
+                            break;
+                        } else {
+                            updateNow = true;
+                        }
+                    } else if (dep.getEdge().getVertex2() == serverId && timestamp.get(dep.getEdge()) < dep.getVersion()) {
+                        flag = false;
+                        break;
+                    }
+                }
+            } finally {
+                readLock.unlock();
+            }
+
+            if (updateNow && flag) {
+                // Write the value of this replicate message to local storage.
+                Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
+                if (ss == Storage.StorageStatus.SUCCESS) {
+                    protocolLOGGER.info("SERVER_MESSAGE " + rm.getKey() + " " + rm.getRec() + "at " + System.currentTimeMillis());
+                    // update the timestamp of current server.
+                    try {
+                        writeLock.lock();
+                        for (Pair<Edge, Integer> e: intersectEdges) {
+                            timestamp.put(e.getKey(), Math.max(timestamp.get(e.getKey()), e.getValue()));
+                        }
+                    } finally {
+                        writeLock.unlock();
+                    }
+                    // Remove this completed replicate message.
+                    iterator.remove();
+                }
+            }
+            intersectEdges.clear();
         }
     }
-
-
-
 }
 
