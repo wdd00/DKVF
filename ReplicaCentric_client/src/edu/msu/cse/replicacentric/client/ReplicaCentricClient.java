@@ -16,14 +16,12 @@ public class ReplicaCentricClient extends DKVFClient {
 
     int serverId;
     int clientId;
-    Timestamp timestamp;
 
     public ReplicaCentricClient(ConfigReader cnfReader) {
         super(cnfReader);
         HashMap<String, List<String>> protocolProperties = cnfReader.getProtocolProperties();
         serverId = new Integer(protocolProperties.get("server_id").get(0));
         clientId = new Integer(protocolProperties.get("client_id").get(0));
-        timestamp = new Timestamp(System.currentTimeMillis());
     }
 
     @Override
