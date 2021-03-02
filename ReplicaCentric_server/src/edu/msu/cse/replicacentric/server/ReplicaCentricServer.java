@@ -264,7 +264,7 @@ public class ReplicaCentricServer extends DKVFServer {
                     protocolLOGGER.severe("Problem finding bucket for key " + pm.getKey());
                 }
                 if (v1 == serverId && AdMatrix[v1-1][v2-1].contains(bucket)) {
-                    timestamp.put(dep.getKey(), dep.getValue() + 1);
+                    timestamp.put(dep.getKey(), timestamp.get(dep.getKey()) + 1);
                 }
             }
         } finally {
