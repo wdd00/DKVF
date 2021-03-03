@@ -8,7 +8,6 @@ import edu.msu.cse.dkvf.metadata.Metadata;
 import javafx.util.Pair;
 
 import java.security.NoSuchAlgorithmException;
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -130,10 +129,7 @@ public class ReplicaCentricServer extends DKVFServer {
                     path.add(serverId);
                     checkEdges(path);
                     path.remove(path.size()-1);
-                } else if (visited[i-1]) {
-                    // Current loop doesn't contain serverId. Ignore;
-                    continue;
-                } else {
+                } else if (!visited[i-1]) {
                     // Continue forming the loop.
                     path.add(i);
                     visited[i-1] = true;
