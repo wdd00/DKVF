@@ -2,7 +2,6 @@ package edu.msu.cse.replicacentric.server;
 
 import edu.msu.cse.dkvf.ClientMessageAgent;
 import edu.msu.cse.dkvf.DKVFServer;
-import edu.msu.cse.dkvf.ServerConnector;
 import edu.msu.cse.dkvf.Storage;
 import edu.msu.cse.dkvf.config.ConfigReader;
 import edu.msu.cse.dkvf.metadata.Metadata;
@@ -38,7 +37,9 @@ public class ReplicaCentricServer extends DKVFServer {
     // pending client message lock
     ReadWriteLock clientLock = new ReentrantReadWriteLock();
     Lock clientWriteLock = clientLock.writeLock();
-    Lock clientReadLock = clientLock.readLock();
+    // pending replicate message lock
+    ReadWriteLock serverLock = new ReentrantReadWriteLock();
+    Lock serverWriteLock = serverLock.writeLock();
 
     /**
      * Constructor for DKVFServer
@@ -441,135 +442,125 @@ public class ReplicaCentricServer extends DKVFServer {
     private void handleReplicateMesssage(ServerMessage sm) {
         ReplicateMessage rm = sm.getReplicateMessage();
 
-        // Firstly, add replicate message to pendings.
-        pendingReplicateMessages.add(rm);
-        Iterator<ReplicateMessage> iterator = pendingReplicateMessages.iterator();
-        while (iterator.hasNext()){
-            rm = iterator.next();
-            boolean updateNow = false, flag = true;
+        try {
+            serverWriteLock.lock();
+            // Firstly, add replicate message to pendings.
+            pendingReplicateMessages.add(rm);
+            Iterator<ReplicateMessage> iterator = pendingReplicateMessages.iterator();
+            while (iterator.hasNext()){
+                rm = iterator.next();
+                boolean updateNow = false, flag = true;
 
-            // This is used to store the edges ∈ E_serverId ∩ E_rm.getServerId().
-            List<Pair<Edge, Long>> intersectEdges = new ArrayList<>();
+                // This is used to store the edges ∈ E_serverId ∩ E_rm.getServerId().
+                List<Pair<Edge, Long>> intersectEdges = new ArrayList<>();
 
-            try {
-                readLock.lock();
-                for (Dependency dep: rm.getTimestampsList()) {
-                    if (timestamp.containsKey(dep.getEdge())) {
-                        intersectEdges.add(new Pair<>(dep.getEdge(), dep.getVersion()));
-                    }
-                    if (dep.getEdge().getVertex1() == rm.getServerId() && dep.getEdge().getVertex2() == serverId) {
-                        if (timestamp.get(dep.getEdge()) < dep.getVersion() - 1) {
-                            // This replicate message needs to wait for this server's update later.
-                            break;
-                        } else if (timestamp.get(dep.getEdge()) >= dep.getVersion()) {
-                            // This server is newer than this replicate message.
-                            iterator.remove();
-                            break;
-                        } else {
-                            updateNow = true;
+                try {
+                    readLock.lock();
+                    for (Dependency dep: rm.getTimestampsList()) {
+                        if (timestamp.containsKey(dep.getEdge())) {
+                            intersectEdges.add(new Pair<>(dep.getEdge(), dep.getVersion()));
                         }
-                    } else if (dep.getEdge().getVertex2() == serverId && timestamp.get(dep.getEdge()) < dep.getVersion()) {
-                        flag = false;
-                        break;
+                        if (dep.getEdge().getVertex1() == rm.getServerId() && dep.getEdge().getVertex2() == serverId) {
+                            if (timestamp.get(dep.getEdge()) < dep.getVersion() - 1) {
+                                // This replicate message needs to wait for this server's update later.
+                                break;
+                            } else if (timestamp.get(dep.getEdge()) >= dep.getVersion()) {
+                                // This server is newer than this replicate message.
+                                iterator.remove();
+                                break;
+                            } else {
+                                updateNow = true;
+                            }
+                        } else if (dep.getEdge().getVertex2() == serverId && timestamp.get(dep.getEdge()) < dep.getVersion()) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                } finally {
+                    readLock.unlock();
+                }
+
+                if (updateNow && flag) {
+                    // Write the value of this replicate message to local storage.
+                    Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
+                    if (ss == Storage.StorageStatus.SUCCESS) {
+                        protocolLOGGER.info("SERVER_MESSAGE " + rm.getKey() + " " + rm.getRec() + "at " + System.currentTimeMillis());
+                        // update the timestamp of current server.
+                        try {
+                            writeLock.lock();
+                            for (Pair<Edge, Long> e: intersectEdges) {
+                                timestamp.put(e.getKey(), Math.max(timestamp.get(e.getKey()), e.getValue()));
+                            }
+                        } finally {
+                            writeLock.unlock();
+                        }
+                        // Remove this completed replicate message.
+                        iterator.remove();
                     }
                 }
-            } finally {
-                readLock.unlock();
+                intersectEdges.clear();
             }
-
-            if (updateNow && flag) {
-                // Write the value of this replicate message to local storage.
-                Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
-                if (ss == Storage.StorageStatus.SUCCESS) {
-                    protocolLOGGER.info("SERVER_MESSAGE " + rm.getKey() + " " + rm.getRec() + "at " + System.currentTimeMillis());
-                    // update the timestamp of current server.
-                    try {
-                        writeLock.lock();
-                        for (Pair<Edge, Long> e: intersectEdges) {
-                            timestamp.put(e.getKey(), Math.max(timestamp.get(e.getKey()), e.getValue()));
-                        }
-                    } finally {
-                        writeLock.unlock();
-                    }
-                    // Remove this completed replicate message.
-                    iterator.remove();
-                }
-            }
-            intersectEdges.clear();
+        } finally {
+            serverWriteLock.unlock();
         }
+
         handlePendingClientMessages();
     }
 
     private void handlePendingClientMessages() {
-        Iterator<ClientMessageAgent> iterator = pendingClientMessages.iterator();
-        while (iterator.hasNext()) {
-            ClientMessageAgent cma;
-            try {
-                clientReadLock.lock();
-                cma = iterator.next();
-            } finally {
-                clientReadLock.unlock();
-            }
-            if (cma.getClientMessage().hasGetMessage()) {
-                if (handleMessagesNow(cma.getClientMessage().getGetMessage().getTimestampsList())) {
-                    Record rec = handleGetMessages(cma.getClientMessage().getGetMessage());
-                    ClientReply cr;
-                    if (rec == null) {
-                        cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(false).build()).build();
-                    } else {
-                        cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(true).setRecord(rec).build()).build();
-                    }
-                    cma.sendReply(cr);
-                    try {
-                        clientWriteLock.lock();
-                        iterator.remove();
-                    } finally {
-                        clientWriteLock.unlock();
-                    }
-                }
-            } else if (cma.getClientMessage().hasPutMessage()) {
-                if (handleMessagesNow(cma.getClientMessage().getPutMessage().getTimestampsList())) {
-                    PutMessage pm = cma.getClientMessage().getPutMessage();
-                    boolean status = handlePutMessages(pm);
-                    ClientReply cr;
-                    if (status) {
-                        protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
-                        cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).build()).build();
-                    } else {
-                        cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
-                    }
-                    cma.sendReply(cr);
-                    try {
-                        clientWriteLock.lock();
-                        iterator.remove();
-                    } finally {
-                        clientWriteLock.unlock();
-                    }
-                }
-            } else if (cma.getClientMessage().hasUpdateTMessage()) {
-                if (handleMessagesNow(cma.getClientMessage().getUpdateTMessage().getTimestampsList())) {
-                    List<Dependency> timestampList = cma.getClientMessage().getUpdateTMessage().getTimestampsList();
-                    try {
-                        writeLock.lock();
-                        for (Dependency dep: timestampList) {
-                            if (timestamp.containsKey(dep.getEdge()) && dep.getVersion() > timestamp.get(dep.getEdge())) {
-                                timestamp.put(dep.getEdge(), dep.getVersion());
-                            }
+        try {
+            clientWriteLock.lock();
+            Iterator<ClientMessageAgent> iterator = pendingClientMessages.iterator();
+            while (iterator.hasNext()) {
+                ClientMessageAgent cma = iterator.next();
+                if (cma.getClientMessage().hasGetMessage()) {
+                    if (handleMessagesNow(cma.getClientMessage().getGetMessage().getTimestampsList())) {
+                        Record rec = handleGetMessages(cma.getClientMessage().getGetMessage());
+                        ClientReply cr;
+                        if (rec == null) {
+                            cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(false).build()).build();
+                        } else {
+                            cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(true).setRecord(rec).build()).build();
                         }
-                    } finally {
-                        writeLock.unlock();
-                    }
-                    ClientReply cr = ClientReply.newBuilder().setUpdateTReply(UpdateTMessageReply.newBuilder().setStatus(true).build()).build();
-                    cma.sendReply(cr);
-                    // remove this timestamp request from pending client message list.
-                    try {
-                        clientWriteLock.lock();
+                        cma.sendReply(cr);
                         iterator.remove();
-                    } finally {
-                        clientWriteLock.unlock();
+                    }
+                } else if (cma.getClientMessage().hasPutMessage()) {
+                    if (handleMessagesNow(cma.getClientMessage().getPutMessage().getTimestampsList())) {
+                        PutMessage pm = cma.getClientMessage().getPutMessage();
+                        boolean status = handlePutMessages(pm);
+                        ClientReply cr;
+                        if (status) {
+                            protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
+                            cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).build()).build();
+                        } else {
+                            cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
+                        }
+                        cma.sendReply(cr);
+                        iterator.remove();
+                    }
+                } else if (cma.getClientMessage().hasUpdateTMessage()) {
+                    if (handleMessagesNow(cma.getClientMessage().getUpdateTMessage().getTimestampsList())) {
+                        List<Dependency> timestampList = cma.getClientMessage().getUpdateTMessage().getTimestampsList();
+                        try {
+                            writeLock.lock();
+                            for (Dependency dep: timestampList) {
+                                if (timestamp.containsKey(dep.getEdge()) && dep.getVersion() > timestamp.get(dep.getEdge())) {
+                                    timestamp.put(dep.getEdge(), dep.getVersion());
+                                }
+                            }
+                        } finally {
+                            writeLock.unlock();
+                        }
+                        ClientReply cr = ClientReply.newBuilder().setUpdateTReply(UpdateTMessageReply.newBuilder().setStatus(true).build()).build();
+                        cma.sendReply(cr);
+                        // remove this timestamp request from pending client message list.
+                        iterator.remove();
                     }
                 }
             }
+        } finally {
+            clientWriteLock.unlock();
         }
     }
 }
