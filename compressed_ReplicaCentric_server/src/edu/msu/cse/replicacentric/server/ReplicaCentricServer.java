@@ -8,7 +8,6 @@ import edu.msu.cse.dkvf.metadata.Metadata;
 import javafx.util.Pair;
 
 import java.security.NoSuchAlgorithmException;
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -32,6 +31,9 @@ public class ReplicaCentricServer extends DKVFServer {
     ReadWriteLock lock = new ReentrantReadWriteLock();
     Lock writeLock = lock.writeLock();
     Lock readLock = lock.readLock();
+    // pending replicate message lock
+    ReadWriteLock serverLock = new ReentrantReadWriteLock();
+    Lock serverWriteLock = serverLock.writeLock();
     // The index of each operation. (Easy to construct the happened-before graph)
     int opIdx = 1;
     // Store the joint timestamp.
@@ -69,7 +71,6 @@ public class ReplicaCentricServer extends DKVFServer {
         }
 
         generateDependencies();
-        //protocolLOGGER.info(Thread.currentThread().getName() + " Timestamp of server" + serverId + ": " + timestamp);
     }
 
     // This function generates the timestamp to track of this server according to the sharedGraph.
@@ -131,10 +132,7 @@ public class ReplicaCentricServer extends DKVFServer {
                     path.add(serverId);
                     checkEdges(path);
                     path.remove(path.size()-1);
-                } else if (visited[i-1]) {
-                    // Current loop doesn't contain serverId. Ignore;
-                    continue;
-                } else {
+                } else if (!visited[i-1]) {
                     // Continue forming the loop.
                     path.add(i);
                     visited[i-1] = true;
@@ -178,7 +176,6 @@ public class ReplicaCentricServer extends DKVFServer {
                 }
                 // satisfy the third condition.
                 if (j == path.size() - 1) {
-                    //timestamp.add(Metadata.Dependency.newBuilder().setVertex1(path.get(k+1)).setVertex2(path.get(k)).setVersion(0).build());
                     timestamp.put(Metadata.Edge.newBuilder().setVertex1(path.get(k+1)).setVertex2(path.get(k)).build(), 0);
                 }
             } else {
@@ -354,69 +351,75 @@ public class ReplicaCentricServer extends DKVFServer {
     private void handleReplicateMesssage(ServerMessage sm) {
         ReplicateMessage rm = sm.getReplicateMessage();
 
-        // Firstly, add replicate message to pendings.
-        pendingReplicateMessages.add(rm);
-        Iterator<ReplicateMessage> iterator = pendingReplicateMessages.iterator();
-        while (iterator.hasNext()){
-            rm = iterator.next();
-            boolean updateNow = false, flag = true;
+        try {
+            serverWriteLock.lock();
+            // Firstly, add replicate message to pendings.
+            pendingReplicateMessages.add(rm);
+            Iterator<ReplicateMessage> iterator = pendingReplicateMessages.iterator();
+            while (iterator.hasNext()){
+                rm = iterator.next();
+                boolean updateNow = false, flag = true;
 
-            // This is used to store the edges ∈ E_serverId ∩ E_rm.getServerId().
-            List<Pair<Edge, Integer>> intersectEdges = new ArrayList<>();
+                // This is used to store the edges ∈ E_serverId ∩ E_rm.getServerId().
+                List<Pair<Edge, Integer>> intersectEdges = new ArrayList<>();
 
-            try {
-                readLock.lock();
-                for (Dependency dep: rm.getTimestampsList()) {
-                    if (timestamp.containsKey(dep.getEdge())) {
-                        intersectEdges.add(new Pair<>(dep.getEdge(), (int) dep.getVersion()));
-                    }
-                    if (dep.getEdge().getVertex1() == rm.getServerId() && dep.getEdge().getVertex2() == serverId) {
-                        if (timestamp.get(dep.getEdge()) < dep.getVersion() - 1) {
-                            // This replicate message needs to wait for this server's update later.
-                            break;
-                        } else if (timestamp.get(dep.getEdge()) >= dep.getVersion()) {
-                            // This server is newer than this replicate message.
-                            iterator.remove();
-                            break;
-                        } else {
-                            updateNow = true;
+                try {
+                    readLock.lock();
+                    for (Dependency dep: rm.getTimestampsList()) {
+                        if (timestamp.containsKey(dep.getEdge())) {
+                            intersectEdges.add(new Pair<>(dep.getEdge(), (int) dep.getVersion()));
                         }
-                    } else if (dep.getEdge().getVertex2() == serverId && timestamp.get(dep.getEdge()) < dep.getVersion()) {
-                        flag = false;
-                        break;
+                        if (dep.getEdge().getVertex1() == rm.getServerId() && dep.getEdge().getVertex2() == serverId) {
+                            if (timestamp.get(dep.getEdge()) < dep.getVersion() - 1) {
+                                // This replicate message needs to wait for this server's update later.
+                                break;
+                            } else if (timestamp.get(dep.getEdge()) >= dep.getVersion()) {
+                                // This server is newer than this replicate message.
+                                iterator.remove();
+                                break;
+                            } else {
+                                updateNow = true;
+                            }
+                        } else if (dep.getEdge().getVertex2() == serverId && timestamp.get(dep.getEdge()) < dep.getVersion()) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                } finally {
+                    readLock.unlock();
+                }
+
+                if (updateNow && flag) {
+                    // Write the value of this replicate message to local storage.
+                    Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
+                    if (ss == Storage.StorageStatus.SUCCESS) {
+                        protocolLOGGER.info("SERVER_MESSAGE " + rm.getKey() + " " + rm.getRec() + "at " + System.currentTimeMillis());
+                        if (!jointTimestamp.containsKey(rm.getServerId())) {
+                            List<Edge> temp = new ArrayList<>();
+                            for (Pair<Edge, Integer> e: intersectEdges) {
+                                temp.add(e.getKey());
+                            }
+                            jointTimestamp.put(rm.getServerId(), temp);
+                        }
+                        // update the timestamp of current server.
+                        try {
+                            writeLock.lock();
+                            for (Pair<Edge, Integer> e: intersectEdges) {
+                                timestamp.put(e.getKey(), Math.max(timestamp.get(e.getKey()), e.getValue()));
+                            }
+                        } finally {
+                            writeLock.unlock();
+                        }
+                        // Remove this completed replicate message.
+                        iterator.remove();
                     }
                 }
-            } finally {
-                readLock.unlock();
+                intersectEdges.clear();
             }
-
-            if (updateNow && flag) {
-                // Write the value of this replicate message to local storage.
-                Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
-                if (ss == Storage.StorageStatus.SUCCESS) {
-                    protocolLOGGER.info("SERVER_MESSAGE " + rm.getKey() + " " + rm.getRec() + "at " + System.currentTimeMillis());
-                    if (!jointTimestamp.containsKey(rm.getServerId())) {
-                        List<Edge> temp = new ArrayList<>();
-                        for (Pair<Edge, Integer> e: intersectEdges) {
-                            temp.add(e.getKey());
-                        }
-                        jointTimestamp.put(rm.getServerId(), temp);
-                    }
-                    // update the timestamp of current server.
-                    try {
-                        writeLock.lock();
-                        for (Pair<Edge, Integer> e: intersectEdges) {
-                            timestamp.put(e.getKey(), Math.max(timestamp.get(e.getKey()), e.getValue()));
-                        }
-                    } finally {
-                        writeLock.unlock();
-                    }
-                    // Remove this completed replicate message.
-                    iterator.remove();
-                }
-            }
-            intersectEdges.clear();
+        } finally {
+            serverWriteLock.unlock();
         }
+
     }
 }
 
