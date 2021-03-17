@@ -18,6 +18,8 @@ public class ReplicaCentricClient extends DKVFClient {
     HashMap<Metadata.Edge, Long> timestamp = new HashMap<>();
     List<Integer> replicas = new ArrayList<>();
     List<HashSet<Integer>> replicaKeys = new ArrayList<>();
+    List<HashSet<Metadata.Edge>> replicaEdges = new ArrayList<>();
+    HashMap<Integer, Integer> replicaMap = new HashMap<>();
     Random rand = new Random();
     boolean request_timestamp = false;
     int localReplicaIdx = -1;
@@ -27,10 +29,14 @@ public class ReplicaCentricClient extends DKVFClient {
         HashMap<String, List<String>> protocolProperties = cnfReader.getProtocolProperties();
         clientId = new Integer(protocolProperties.get("client_id").get(0));
         numOfBuckets = new Integer(protocolProperties.get("num_of_buckets").get(0));
+        // To locate the replica ID easier, use a hash map to store the ID and the index in replicas.
+        int idx = 0;
         for (String r: protocolProperties.get("client" + clientId)) {
             replicas.add(new Integer(r));
+            replicaMap.put(new Integer(r), idx);
+            idx++;
             if (r.equals(String.valueOf(clientId))) {
-                localReplicaIdx = replicas.size()-1;
+                localReplicaIdx = replicas.size() - 1;
             }
         }
         protocolLOGGER.info("client's construction at " + System.currentTimeMillis());
@@ -45,10 +51,6 @@ public class ReplicaCentricClient extends DKVFClient {
             // Convert the randomly generated keys into one of the 100 keys.
             key = String.valueOf((Utils.getMd5HashLong(key) % 25));
             long startTime = System.currentTimeMillis();
-            Metadata.PutMessage pm = Metadata.PutMessage.newBuilder().setKey(key).setValue(
-                    Metadata.Record.newBuilder().setValue(ByteString.copyFrom(value)).setClientId(clientId).
-                            setSourceOpIdx(OpIdx).build()).addAllTimestamps(getTimestampList()).build();
-            Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setPutMessage(pm).build();
             int serverId = clientId;
             // If this key belongs to the local replica, directly insert to the local replica.
             // If not, randomly choose a destination replica containing this key.
@@ -56,6 +58,10 @@ public class ReplicaCentricClient extends DKVFClient {
                 serverId = randomReplica(key);
             }
             if (serverId > 0) {
+                Metadata.PutMessage pm = Metadata.PutMessage.newBuilder().setKey(key).setValue(
+                        Metadata.Record.newBuilder().setValue(ByteString.copyFrom(value)).setClientId(clientId).
+                                setSourceOpIdx(OpIdx).build()).addAllTimestamps(getTimestampList(serverId)).build();
+                Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setPutMessage(pm).build();
                 if (sendToServer(String.valueOf(serverId), cm) == ServerConnector.NetworkStatus.FAILURE)
                     return false;
                 Metadata.ClientReply cr = readFromServer(String.valueOf(serverId));
@@ -99,13 +105,16 @@ public class ReplicaCentricClient extends DKVFClient {
     }
 
     private boolean updateLocalReplica(List<Metadata.Dependency> timestampList) {
-        Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setUpdateTMessage(Metadata.UpdateTMessage.
-                newBuilder().addAllTimestamps(timestampList).build()).build();
-        if (sendToServer(String.valueOf(clientId), cm) == ServerConnector.NetworkStatus.SUCCESS) {
-            Metadata.ClientReply cr = readFromServer(String.valueOf(clientId));
-            if (cr != null && cr.getUpdateTReply().getStatus()) {
-                return true;
+        List<Metadata.Dependency> temp_timestampList = new ArrayList<>();
+        for (Metadata.Dependency dep: timestampList) {
+            if (replicaEdges.get(localReplicaIdx).contains(dep.getEdge())) {
+                temp_timestampList.add(dep);
             }
+        }
+        Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setUpdateTMessage(Metadata.UpdateTMessage.
+                newBuilder().addAllTimestamps(temp_timestampList).build()).build();
+        if (sendToServer(String.valueOf(clientId), cm) == ServerConnector.NetworkStatus.SUCCESS) {
+                return true;
         }
         return false;
     }
@@ -117,29 +126,36 @@ public class ReplicaCentricClient extends DKVFClient {
             if (sendToServer(String.valueOf(r), cm) == ServerConnector.NetworkStatus.SUCCESS) {
                 Metadata.ClientReply cr = readFromServer(String.valueOf(r));
                 if (cr.hasTReply() && !cr.getTReply().getTimestampsList().isEmpty()) {
+                    HashSet<Metadata.Edge> tempEdges = new HashSet();
                     for (Metadata.Dependency dep: cr.getTReply().getTimestampsList()) {
+                        tempEdges.add(dep.getEdge());
                         if (!timestamp.containsKey(dep.getEdge()) || timestamp.get(dep.getEdge()) < dep.getVersion()) {
                             timestamp.put(dep.getEdge(), dep.getVersion());
                         }
                     }
                     replicaKeys.add(new HashSet<>(cr.getTReply().getKeysList()));
+                    replicaEdges.add(tempEdges);
                 } else if (cr.hasTReply()) {
                     replicaKeys.add(new HashSet<>(cr.getTReply().getKeysList()));
+                    replicaEdges.add(new HashSet<>());
                 } else {
                     replicaKeys.add(new HashSet<>());
+                    replicaEdges.add(new HashSet<>());
                 }
             } else {
                 protocolLOGGER.severe("Cannot get the timestamp from replica" + r);
                 return false;
             }
         }
+        //protocolLOGGER.info("replicaEdges " + replicaEdges);
         return true;
     }
 
-    private List<Metadata.Dependency> getTimestampList() {
+    private List<Metadata.Dependency> getTimestampList(int serverId) {
         List<Metadata.Dependency> temp_timestamps = new ArrayList<>();
-        for (Map.Entry<Metadata.Edge, Long> entry: timestamp.entrySet()) {
-            Metadata.Dependency dep = Metadata.Dependency.newBuilder().setEdge(entry.getKey()).setVersion(entry.getValue()).build();
+        int idx = replicaMap.get(serverId);
+        for (Metadata.Edge e: replicaEdges.get(idx)) {
+            Metadata.Dependency dep = Metadata.Dependency.newBuilder().setEdge(e).setVersion(timestamp.get(e)).build();
             temp_timestamps.add(dep);
         }
         return temp_timestamps;
@@ -166,7 +182,7 @@ public class ReplicaCentricClient extends DKVFClient {
         int randId = rand.nextInt(replicas.size());
         for (int i = randId; i < randId + replicas.size(); i++) {
             if (replicaKeys.get(i % replicas.size()).contains(bucket)) {
-                return (i % replicas.size()) + 1;
+                return replicas.get(i % replicas.size());
             }
         }
         return -1;
@@ -184,10 +200,8 @@ public class ReplicaCentricClient extends DKVFClient {
                 request_timestamp = requestTimestamps();
             }
             // Convert the randomly generated keys into one of the 100 keys.
-            key = String.valueOf((Utils.getMd5HashLong(key) % 25));
+            key = String.valueOf((Utils.getMd5HashLong(key) % 30));
             long startTime = System.currentTimeMillis();
-            Metadata.GetMessage gm = Metadata.GetMessage.newBuilder().setKey(key).addAllTimestamps(getTimestampList()).build();
-            Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setGetMessage(gm).build();
             int serverId = clientId;
             // If this key belongs to the local replica, directly insert to the local replica.
             // If not, randomly choose a destination replica containing this key.
@@ -195,6 +209,8 @@ public class ReplicaCentricClient extends DKVFClient {
                 serverId = randomReplica(key);
             }
             if (serverId > 0) {
+                Metadata.GetMessage gm = Metadata.GetMessage.newBuilder().setKey(key).addAllTimestamps(getTimestampList(serverId)).build();
+                Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setGetMessage(gm).build();
                 if (sendToServer(String.valueOf(serverId), cm) == ServerConnector.NetworkStatus.FAILURE)
                     return null;
                 Metadata.ClientReply cr = readFromServer(String.valueOf(serverId));

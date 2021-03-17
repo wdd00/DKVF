@@ -271,8 +271,6 @@ public class ReplicaCentricServer extends DKVFServer {
             } finally {
                 writeLock.unlock();
             }
-            ClientReply cr = ClientReply.newBuilder().setUpdateTReply(UpdateTMessageReply.newBuilder().setStatus(true).build()).build();
-            cma.sendReply(cr);
         } else {
             // If not, add this timestamp request into pending client message list.
             try {
@@ -324,7 +322,7 @@ public class ReplicaCentricServer extends DKVFServer {
             ClientReply cr;
             if (status) {
                 protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
-                cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).build()).build();
+                cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).addAllTimestamps(getTimestampList()).build()).build();
             } else {
                 cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
             }
@@ -400,7 +398,7 @@ public class ReplicaCentricServer extends DKVFServer {
             if (rec == null) {
                 cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(false).build()).build();
             } else {
-                cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(true).setRecord(rec).build()).build();
+                cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(true).setRecord(rec).addAllTimestamps(getTimestampList()).build()).build();
             }
             cma.sendReply(cr);
         }
@@ -520,7 +518,7 @@ public class ReplicaCentricServer extends DKVFServer {
                         if (rec == null) {
                             cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(false).build()).build();
                         } else {
-                            cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(true).setRecord(rec).build()).build();
+                            cr = ClientReply.newBuilder().setGetReply(GetReply.newBuilder().setStatus(true).setRecord(rec).addAllTimestamps(getTimestampList()).build()).build();
                         }
                         cma.sendReply(cr);
                         iterator.remove();
@@ -532,7 +530,7 @@ public class ReplicaCentricServer extends DKVFServer {
                         ClientReply cr;
                         if (status) {
                             protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
-                            cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).build()).build();
+                            cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).addAllTimestamps(getTimestampList()).build()).build();
                         } else {
                             cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
                         }
@@ -552,8 +550,6 @@ public class ReplicaCentricServer extends DKVFServer {
                         } finally {
                             writeLock.unlock();
                         }
-                        ClientReply cr = ClientReply.newBuilder().setUpdateTReply(UpdateTMessageReply.newBuilder().setStatus(true).build()).build();
-                        cma.sendReply(cr);
                         // remove this timestamp request from pending client message list.
                         iterator.remove();
                     }
