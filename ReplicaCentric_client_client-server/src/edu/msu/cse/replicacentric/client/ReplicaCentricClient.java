@@ -127,7 +127,7 @@ public class ReplicaCentricClient extends DKVFClient {
         int randId = rand.nextInt(replicas.size());
         for (int i = randId; i < randId + replicas.size(); i++) {
             if (replicaKeys.get(i % replicas.size()).contains(bucket)) {
-                return (i % replicas.size()) + 1;
+                return replicas.get(i % replicas.size());
             }
         }
         return -1;
