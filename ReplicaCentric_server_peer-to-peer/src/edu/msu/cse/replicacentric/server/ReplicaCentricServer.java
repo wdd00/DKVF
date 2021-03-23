@@ -264,13 +264,15 @@ public class ReplicaCentricServer extends DKVFServer {
             try {
                 writeLock.lock();
                 for (Dependency dep: timestampList) {
-                    if (timestamp.containsKey(dep.getEdge()) && dep.getVersion() > timestamp.get(dep.getEdge())) {
+                    if (dep.getVersion() > timestamp.get(dep.getEdge())) {
                         timestamp.put(dep.getEdge(), dep.getVersion());
                     }
                 }
             } finally {
                 writeLock.unlock();
             }
+            ClientReply cr = ClientReply.newBuilder().setUpdateTReply(UpdateTMessageReply.newBuilder().setStatus(true).build()).build();
+            cma.sendReply(cr);
         } else {
             // If not, add this timestamp request into pending client message list.
             try {
@@ -321,7 +323,6 @@ public class ReplicaCentricServer extends DKVFServer {
             boolean status = handlePutMessages(pm);
             ClientReply cr;
             if (status) {
-                protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
                 cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).addAllTimestamps(getTimestampList()).build()).build();
             } else {
                 cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
@@ -349,12 +350,10 @@ public class ReplicaCentricServer extends DKVFServer {
             writeLock.lock();
             for (Dependency dep: pm.getTimestampsList()) {
                 int v1 = dep.getEdge().getVertex1(), v2 = dep.getEdge().getVertex2();
-                if (timestamp.containsKey(dep.getEdge())) {
-                    if (v1 == serverId && AdMatrix[v1-1][v2-1].contains(bucket)) {
-                        timestamp.put(dep.getEdge(), timestamp.get(dep.getEdge()) + 1);
-                    } else if (timestamp.get(dep.getEdge()) < dep.getVersion()) {
-                        timestamp.put(dep.getEdge(), dep.getVersion());
-                    }
+                if (v1 == serverId && AdMatrix[v1-1][v2-1].contains(bucket)) {
+                    timestamp.put(dep.getEdge(), timestamp.get(dep.getEdge()) + 1);
+                } else if (timestamp.get(dep.getEdge()) < dep.getVersion()) {
+                    timestamp.put(dep.getEdge(), dep.getVersion());
                 }
             }
         } finally {
@@ -370,7 +369,6 @@ public class ReplicaCentricServer extends DKVFServer {
                 sendToServerViaChannel(Integer.toString(i + 1), sm);
             }
         }
-
         return true;
     }
 
@@ -410,7 +408,7 @@ public class ReplicaCentricServer extends DKVFServer {
         try {
             readLock.lock();
             for (Dependency dep: timestampList) {
-                if (timestamp.containsKey(dep.getEdge()) && dep.getEdge().getVertex2() == serverId && dep.getVersion() > timestamp.get(dep.getEdge())) {
+                if (dep.getEdge().getVertex2() == serverId && dep.getVersion() > timestamp.get(dep.getEdge())) {
                     return false;
                 }
             }
@@ -482,7 +480,6 @@ public class ReplicaCentricServer extends DKVFServer {
                     // Write the value of this replicate message to local storage.
                     Storage.StorageStatus ss = insert(rm.getKey(), rm.getRec());
                     if (ss == Storage.StorageStatus.SUCCESS) {
-                        protocolLOGGER.info("SERVER_MESSAGE " + rm.getKey() + " " + rm.getRec() + "at " + System.currentTimeMillis());
                         // update the timestamp of current server.
                         try {
                             writeLock.lock();
@@ -529,7 +526,6 @@ public class ReplicaCentricServer extends DKVFServer {
                         boolean status = handlePutMessages(pm);
                         ClientReply cr;
                         if (status) {
-                            protocolLOGGER.info("PUT " + pm.getKey() + " " + pm.getValue() + "at " + System.currentTimeMillis());
                             cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(true).addAllTimestamps(getTimestampList()).build()).build();
                         } else {
                             cr = ClientReply.newBuilder().setPutReply(PutReply.newBuilder().setStatus(false).build()).build();
@@ -543,13 +539,15 @@ public class ReplicaCentricServer extends DKVFServer {
                         try {
                             writeLock.lock();
                             for (Dependency dep: timestampList) {
-                                if (timestamp.containsKey(dep.getEdge()) && dep.getVersion() > timestamp.get(dep.getEdge())) {
+                                if (dep.getVersion() > timestamp.get(dep.getEdge())) {
                                     timestamp.put(dep.getEdge(), dep.getVersion());
                                 }
                             }
                         } finally {
                             writeLock.unlock();
                         }
+                        ClientReply cr = ClientReply.newBuilder().setUpdateTReply(UpdateTMessageReply.newBuilder().setStatus(true).build()).build();
+                        cma.sendReply(cr);
                         // remove this timestamp request from pending client message list.
                         iterator.remove();
                     }
