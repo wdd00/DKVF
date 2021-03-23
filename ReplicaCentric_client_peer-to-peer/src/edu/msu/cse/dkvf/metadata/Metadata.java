@@ -1204,16 +1204,6 @@ public final class Metadata {
      * <code>bytes value = 1;</code>
      */
     com.google.protobuf.ByteString getValue();
-
-    /**
-     * <code>int32 clientId = 2;</code>
-     */
-    int getClientId();
-
-    /**
-     * <code>int64 sourceOpIdx = 3;</code>
-     */
-    long getSourceOpIdx();
   }
   /**
    * <pre>
@@ -1234,8 +1224,6 @@ public final class Metadata {
     }
     private Record() {
       value_ = com.google.protobuf.ByteString.EMPTY;
-      clientId_ = 0;
-      sourceOpIdx_ = 0L;
     }
 
     @java.lang.Override
@@ -1271,16 +1259,6 @@ public final class Metadata {
               value_ = input.readBytes();
               break;
             }
-            case 16: {
-
-              clientId_ = input.readInt32();
-              break;
-            }
-            case 24: {
-
-              sourceOpIdx_ = input.readInt64();
-              break;
-            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -1314,24 +1292,6 @@ public final class Metadata {
       return value_;
     }
 
-    public static final int CLIENTID_FIELD_NUMBER = 2;
-    private int clientId_;
-    /**
-     * <code>int32 clientId = 2;</code>
-     */
-    public int getClientId() {
-      return clientId_;
-    }
-
-    public static final int SOURCEOPIDX_FIELD_NUMBER = 3;
-    private long sourceOpIdx_;
-    /**
-     * <code>int64 sourceOpIdx = 3;</code>
-     */
-    public long getSourceOpIdx() {
-      return sourceOpIdx_;
-    }
-
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -1347,12 +1307,6 @@ public final class Metadata {
       if (!value_.isEmpty()) {
         output.writeBytes(1, value_);
       }
-      if (clientId_ != 0) {
-        output.writeInt32(2, clientId_);
-      }
-      if (sourceOpIdx_ != 0L) {
-        output.writeInt64(3, sourceOpIdx_);
-      }
       unknownFields.writeTo(output);
     }
 
@@ -1364,14 +1318,6 @@ public final class Metadata {
       if (!value_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, value_);
-      }
-      if (clientId_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, clientId_);
-      }
-      if (sourceOpIdx_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, sourceOpIdx_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1391,10 +1337,6 @@ public final class Metadata {
       boolean result = true;
       result = result && getValue()
           .equals(other.getValue());
-      result = result && (getClientId()
-          == other.getClientId());
-      result = result && (getSourceOpIdx()
-          == other.getSourceOpIdx());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -1408,11 +1350,6 @@ public final class Metadata {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + VALUE_FIELD_NUMBER;
       hash = (53 * hash) + getValue().hashCode();
-      hash = (37 * hash) + CLIENTID_FIELD_NUMBER;
-      hash = (53 * hash) + getClientId();
-      hash = (37 * hash) + SOURCEOPIDX_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getSourceOpIdx());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1549,10 +1486,6 @@ public final class Metadata {
         super.clear();
         value_ = com.google.protobuf.ByteString.EMPTY;
 
-        clientId_ = 0;
-
-        sourceOpIdx_ = 0L;
-
         return this;
       }
 
@@ -1576,8 +1509,6 @@ public final class Metadata {
       public edu.msu.cse.dkvf.metadata.Metadata.Record buildPartial() {
         edu.msu.cse.dkvf.metadata.Metadata.Record result = new edu.msu.cse.dkvf.metadata.Metadata.Record(this);
         result.value_ = value_;
-        result.clientId_ = clientId_;
-        result.sourceOpIdx_ = sourceOpIdx_;
         onBuilt();
         return result;
       }
@@ -1621,12 +1552,6 @@ public final class Metadata {
         if (other == edu.msu.cse.dkvf.metadata.Metadata.Record.getDefaultInstance()) return this;
         if (other.getValue() != com.google.protobuf.ByteString.EMPTY) {
           setValue(other.getValue());
-        }
-        if (other.getClientId() != 0) {
-          setClientId(other.getClientId());
-        }
-        if (other.getSourceOpIdx() != 0L) {
-          setSourceOpIdx(other.getSourceOpIdx());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1680,58 +1605,6 @@ public final class Metadata {
       public Builder clearValue() {
         
         value_ = getDefaultInstance().getValue();
-        onChanged();
-        return this;
-      }
-
-      private int clientId_ ;
-      /**
-       * <code>int32 clientId = 2;</code>
-       */
-      public int getClientId() {
-        return clientId_;
-      }
-      /**
-       * <code>int32 clientId = 2;</code>
-       */
-      public Builder setClientId(int value) {
-        
-        clientId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int32 clientId = 2;</code>
-       */
-      public Builder clearClientId() {
-        
-        clientId_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private long sourceOpIdx_ ;
-      /**
-       * <code>int64 sourceOpIdx = 3;</code>
-       */
-      public long getSourceOpIdx() {
-        return sourceOpIdx_;
-      }
-      /**
-       * <code>int64 sourceOpIdx = 3;</code>
-       */
-      public Builder setSourceOpIdx(long value) {
-        
-        sourceOpIdx_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 sourceOpIdx = 3;</code>
-       */
-      public Builder clearSourceOpIdx() {
-        
-        sourceOpIdx_ = 0L;
         onChanged();
         return this;
       }
@@ -12762,40 +12635,39 @@ public final class Metadata {
       "\n\024replicaCentric.proto\022\010Metadata\"(\n\004Edge" +
       "\022\017\n\007vertex1\030\001 \001(\005\022\017\n\007vertex2\030\002 \001(\005\";\n\nDe" +
       "pendency\022\034\n\004edge\030\001 \001(\0132\016.Metadata.Edge\022\017" +
-      "\n\007version\030\002 \001(\003\">\n\006Record\022\r\n\005value\030\001 \001(\014" +
-      "\022\020\n\010clientId\030\002 \001(\005\022\023\n\013sourceOpIdx\030\003 \001(\003\"" +
-      "C\n\nGetMessage\022\013\n\003key\030\001 \001(\t\022(\n\ntimestamps" +
-      "\030\002 \003(\0132\024.Metadata.Dependency\"d\n\nPutMessa" +
-      "ge\022\013\n\003key\030\001 \001(\t\022\037\n\005value\030\002 \001(\0132\020.Metadat" +
-      "a.Record\022(\n\ntimestamps\030\003 \003(\0132\024.Metadata." +
-      "Dependency\"-\n\020TimestampMessage\022\031\n\021reques",
-      "t_timestamp\030\001 \001(\010\":\n\016UpdateTMessage\022(\n\nt" +
-      "imestamps\030\001 \003(\0132\024.Metadata.Dependency\"\340\001" +
-      "\n\rClientMessage\022+\n\013get_message\030\001 \001(\0132\024.M" +
-      "etadata.GetMessageH\000\022+\n\013put_message\030\002 \001(" +
-      "\0132\024.Metadata.PutMessageH\000\022/\n\tt_message\030\003" +
-      " \001(\0132\032.Metadata.TimestampMessageH\000\0224\n\020up" +
-      "date_t_message\030\004 \001(\0132\030.Metadata.UpdateTM" +
-      "essageH\000B\016\n\014message_type\"f\n\010GetReply\022\016\n\006" +
-      "status\030\001 \001(\010\022 \n\006record\030\002 \001(\0132\020.Metadata." +
-      "Record\022(\n\ntimestamps\030\003 \003(\0132\024.Metadata.De",
-      "pendency\"D\n\010PutReply\022\016\n\006status\030\001 \001(\010\022(\n\n" +
-      "timestamps\030\002 \003(\0132\024.Metadata.Dependency\"H" +
-      "\n\016TimestampReply\022(\n\ntimestamps\030\001 \003(\0132\024.M" +
-      "etadata.Dependency\022\014\n\004keys\030\002 \003(\005\"%\n\023Upda" +
-      "teTMessageReply\022\016\n\006status\030\001 \001(\010\"\325\001\n\013Clie" +
-      "ntReply\022\'\n\tget_reply\030\001 \001(\0132\022.Metadata.Ge" +
-      "tReplyH\000\022\'\n\tput_reply\030\002 \001(\0132\022.Metadata.P" +
-      "utReplyH\000\022+\n\007t_reply\030\003 \001(\0132\030.Metadata.Ti" +
-      "mestampReplyH\000\0227\n\016update_t_reply\030\004 \001(\0132\035" +
-      ".Metadata.UpdateTMessageReplyH\000B\016\n\014messa",
-      "ge_type\"z\n\020ReplicateMessage\022\013\n\003key\030\001 \001(\t" +
-      "\022\035\n\003rec\030\002 \001(\0132\020.Metadata.Record\022\020\n\010serve" +
-      "rId\030\003 \001(\005\022(\n\ntimestamps\030\004 \003(\0132\024.Metadata" +
-      ".Dependency\"X\n\rServerMessage\0227\n\021replicat" +
-      "e_message\030\001 \001(\0132\032.Metadata.ReplicateMess" +
-      "ageH\000B\016\n\014message_typeB%\n\031edu.msu.cse.dkv" +
-      "f.metadataB\010Metadatab\006proto3"
+      "\n\007version\030\002 \001(\003\"\027\n\006Record\022\r\n\005value\030\001 \001(\014" +
+      "\"C\n\nGetMessage\022\013\n\003key\030\001 \001(\t\022(\n\ntimestamp" +
+      "s\030\002 \003(\0132\024.Metadata.Dependency\"d\n\nPutMess" +
+      "age\022\013\n\003key\030\001 \001(\t\022\037\n\005value\030\002 \001(\0132\020.Metada" +
+      "ta.Record\022(\n\ntimestamps\030\003 \003(\0132\024.Metadata" +
+      ".Dependency\"-\n\020TimestampMessage\022\031\n\021reque" +
+      "st_timestamp\030\001 \001(\010\":\n\016UpdateTMessage\022(\n\n",
+      "timestamps\030\001 \003(\0132\024.Metadata.Dependency\"\340" +
+      "\001\n\rClientMessage\022+\n\013get_message\030\001 \001(\0132\024." +
+      "Metadata.GetMessageH\000\022+\n\013put_message\030\002 \001" +
+      "(\0132\024.Metadata.PutMessageH\000\022/\n\tt_message\030" +
+      "\003 \001(\0132\032.Metadata.TimestampMessageH\000\0224\n\020u" +
+      "pdate_t_message\030\004 \001(\0132\030.Metadata.UpdateT" +
+      "MessageH\000B\016\n\014message_type\"f\n\010GetReply\022\016\n" +
+      "\006status\030\001 \001(\010\022 \n\006record\030\002 \001(\0132\020.Metadata" +
+      ".Record\022(\n\ntimestamps\030\003 \003(\0132\024.Metadata.D" +
+      "ependency\"D\n\010PutReply\022\016\n\006status\030\001 \001(\010\022(\n",
+      "\ntimestamps\030\002 \003(\0132\024.Metadata.Dependency\"" +
+      "H\n\016TimestampReply\022(\n\ntimestamps\030\001 \003(\0132\024." +
+      "Metadata.Dependency\022\014\n\004keys\030\002 \003(\005\"%\n\023Upd" +
+      "ateTMessageReply\022\016\n\006status\030\001 \001(\010\"\325\001\n\013Cli" +
+      "entReply\022\'\n\tget_reply\030\001 \001(\0132\022.Metadata.G" +
+      "etReplyH\000\022\'\n\tput_reply\030\002 \001(\0132\022.Metadata." +
+      "PutReplyH\000\022+\n\007t_reply\030\003 \001(\0132\030.Metadata.T" +
+      "imestampReplyH\000\0227\n\016update_t_reply\030\004 \001(\0132" +
+      "\035.Metadata.UpdateTMessageReplyH\000B\016\n\014mess" +
+      "age_type\"z\n\020ReplicateMessage\022\013\n\003key\030\001 \001(",
+      "\t\022\035\n\003rec\030\002 \001(\0132\020.Metadata.Record\022\020\n\010serv" +
+      "erId\030\003 \001(\005\022(\n\ntimestamps\030\004 \003(\0132\024.Metadat" +
+      "a.Dependency\"X\n\rServerMessage\0227\n\021replica" +
+      "te_message\030\001 \001(\0132\032.Metadata.ReplicateMes" +
+      "sageH\000B\016\n\014message_typeB%\n\031edu.msu.cse.dk" +
+      "vf.metadataB\010Metadatab\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -12826,7 +12698,7 @@ public final class Metadata {
     internal_static_Metadata_Record_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Metadata_Record_descriptor,
-        new java.lang.String[] { "Value", "ClientId", "SourceOpIdx", });
+        new java.lang.String[] { "Value", });
     internal_static_Metadata_GetMessage_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_Metadata_GetMessage_fieldAccessorTable = new

@@ -14,7 +14,6 @@ public class ReplicaCentricClient extends DKVFClient {
 
     int clientId;
     int numOfBuckets;
-    int OpIdx = 1;
     HashMap<Metadata.Edge, Long> timestamp = new HashMap<>();
     List<Integer> replicas = new ArrayList<>();
     List<HashSet<Integer>> replicaKeys = new ArrayList<>();
@@ -22,7 +21,6 @@ public class ReplicaCentricClient extends DKVFClient {
     HashMap<Integer, Integer> replicaMap = new HashMap<>();
     Random rand = new Random();
     boolean request_timestamp = false;
-    int localReplicaIdx = -1;
 
     public ReplicaCentricClient(ConfigReader cnfReader) {
         super(cnfReader);
@@ -35,11 +33,7 @@ public class ReplicaCentricClient extends DKVFClient {
             replicas.add(new Integer(r));
             replicaMap.put(new Integer(r), idx);
             idx++;
-            if (r.equals(String.valueOf(clientId))) {
-                localReplicaIdx = replicas.size() - 1;
-            }
         }
-        protocolLOGGER.info("client's construction at " + System.currentTimeMillis());
     }
 
     @Override
@@ -48,9 +42,7 @@ public class ReplicaCentricClient extends DKVFClient {
             if (!request_timestamp) {
                 request_timestamp = requestTimestamps();
             }
-            // Convert the randomly generated keys into one of the 100 keys.
-            key = String.valueOf((Utils.getMd5HashLong(key) % 25));
-            long startTime = System.currentTimeMillis();
+            //key = String.valueOf((Utils.getMd5HashLong(key) % 5));
             int serverId = clientId;
             // If this key belongs to the local replica, directly insert to the local replica.
             // If not, randomly choose a destination replica containing this key.
@@ -59,8 +51,8 @@ public class ReplicaCentricClient extends DKVFClient {
             }
             if (serverId > 0) {
                 Metadata.PutMessage pm = Metadata.PutMessage.newBuilder().setKey(key).setValue(
-                        Metadata.Record.newBuilder().setValue(ByteString.copyFrom(value)).setClientId(clientId).
-                                setSourceOpIdx(OpIdx).build()).addAllTimestamps(getTimestampList(serverId)).build();
+                        Metadata.Record.newBuilder().setValue(ByteString.copyFrom(value)).
+                                build()).addAllTimestamps(getTimestampList(serverId)).build();
                 Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setPutMessage(pm).build();
                 if (sendToServer(String.valueOf(serverId), cm) == ServerConnector.NetworkStatus.FAILURE)
                     return false;
@@ -70,14 +62,11 @@ public class ReplicaCentricClient extends DKVFClient {
                     merge(cr.getPutReply().getTimestampsList());
                     // Force the local replica's timestamp is no smaller than this client's timestamp.
                     if (serverId != clientId) {
-                        if (!updateLocalReplica(cr.getPutReply().getTimestampsList())) {
+                        if (!updateLocalReplica()) {
                             protocolLOGGER.severe("Local replica could not be updated.");
                             return false;
                         }
                     }
-                    long endTime = System.currentTimeMillis();
-                    OpIdx++;
-                    protocolLOGGER.info("PUT " + key + " " + pm.getValue() + "starts " + startTime + " ends " + endTime);
                     return true;
                 } else {
                     protocolLOGGER.severe("Server could not put the key= " + key);
@@ -101,20 +90,17 @@ public class ReplicaCentricClient extends DKVFClient {
         } catch (NoSuchAlgorithmException e) {
             protocolLOGGER.severe("Problem finding bucket for key " + key);
         }
-        return replicaKeys.get(localReplicaIdx).contains(bucket);
+        return replicaKeys.get(replicaMap.get(clientId)).contains(bucket);
     }
 
-    private boolean updateLocalReplica(List<Metadata.Dependency> timestampList) {
-        List<Metadata.Dependency> temp_timestampList = new ArrayList<>();
-        for (Metadata.Dependency dep: timestampList) {
-            if (replicaEdges.get(localReplicaIdx).contains(dep.getEdge())) {
-                temp_timestampList.add(dep);
-            }
-        }
+    private boolean updateLocalReplica() {
         Metadata.ClientMessage cm = Metadata.ClientMessage.newBuilder().setUpdateTMessage(Metadata.UpdateTMessage.
-                newBuilder().addAllTimestamps(temp_timestampList).build()).build();
+                newBuilder().addAllTimestamps(getTimestampList(clientId)).build()).build();
         if (sendToServer(String.valueOf(clientId), cm) == ServerConnector.NetworkStatus.SUCCESS) {
+            Metadata.ClientReply cr = readFromServer(String.valueOf(clientId));
+            if (cr != null && cr.getUpdateTReply().getStatus()) {
                 return true;
+            }
         }
         return false;
     }
@@ -125,7 +111,7 @@ public class ReplicaCentricClient extends DKVFClient {
         for (Integer r: replicas) {
             if (sendToServer(String.valueOf(r), cm) == ServerConnector.NetworkStatus.SUCCESS) {
                 Metadata.ClientReply cr = readFromServer(String.valueOf(r));
-                if (cr.hasTReply() && !cr.getTReply().getTimestampsList().isEmpty()) {
+                if (cr != null && cr.hasTReply() && !cr.getTReply().getTimestampsList().isEmpty()) {
                     HashSet<Metadata.Edge> tempEdges = new HashSet();
                     for (Metadata.Dependency dep: cr.getTReply().getTimestampsList()) {
                         tempEdges.add(dep.getEdge());
@@ -147,7 +133,6 @@ public class ReplicaCentricClient extends DKVFClient {
                 return false;
             }
         }
-        //protocolLOGGER.info("replicaEdges " + replicaEdges);
         return true;
     }
 
@@ -200,9 +185,8 @@ public class ReplicaCentricClient extends DKVFClient {
                 request_timestamp = requestTimestamps();
             }
             // Convert the randomly generated keys into one of the 100 keys.
-            key = String.valueOf((Utils.getMd5HashLong(key) % 30));
-            long startTime = System.currentTimeMillis();
             int serverId = clientId;
+            //key = String.valueOf((Utils.getMd5HashLong(key) % 5));
             // If this key belongs to the local replica, directly insert to the local replica.
             // If not, randomly choose a destination replica containing this key.
             if (!localReplicaContains(key)) {
@@ -219,13 +203,11 @@ public class ReplicaCentricClient extends DKVFClient {
                     merge(cr.getGetReply().getTimestampsList());
                     // Force the local replica's timestamp is no smaller than this client's timestamp.
                     if (serverId != clientId) {
-                        if (!updateLocalReplica(cr.getGetReply().getTimestampsList())) {
+                        if (!updateLocalReplica()) {
                             protocolLOGGER.severe("Local replica could not be updated.");
                             return null;
                         }
                     }
-                    long endTime = System.currentTimeMillis();
-                    protocolLOGGER.info("GET " + key + " " + cr.getGetReply().getRecord() + "starts " + startTime + " ends " + endTime);
                     return cr.getGetReply().getRecord().getValue().toByteArray();
                 } else {
                     protocolLOGGER.severe("Server could not get the key= " + key);
